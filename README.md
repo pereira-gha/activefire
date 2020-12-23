@@ -95,3 +95,43 @@ This will show the results to your model.
 If you face the message `[ERROR] Dont match X - Y` thit means that a mask or a prediction is missing. Make sure all predictions produced by your model have a corresponding mask.
 
 
+## Compare against the Groundtruth
+
+The code inside the folder `src/groundtruth` gives you a way to compare both the masks of the algorithms and the output produced by CNN agaiinst the Groundtruth. To compare the algorithms (Schroeder, Murphy and GOLI) against the groundtruth run:
+
+```
+python evaluate.py
+
+```
+
+This will give you the same metrics available in the test phase.
+
+In the same way, you may test the output produced by the CNN against the groundtruth. The code inside `src/groundtruth/cnn_compare` gives you a way to compare each model. It is important to copy the trained weights inside a folder named `weights` inside each model folder. Alternatively you can change the constant `WEIGHTS_FILE` with the desired weights.
+
+You can compare each model individually, for this access the desired model folder and run:
+
+```
+python evaluate.py
+```
+
+Or you can run all tests running the `src/groundtruth/cnn_compare/run_all.sh` script. This will create a `txt` file inside each model folder with the results.
+
+
+## Show the CNN output
+
+You can also generate images from trained models. For this purpose you can access `src/utils/cnn` folder and you will find the `generate_inference.py` script. This script will apply the selected model over and image patch and generate a PNG image with the prediction. You need to define the constant `IMAGE_NAME` with the desired image, and if set the constant `IMAGE_PATH` with the path where this image can be found. It is important to define the constant `MASK_ALGORITHM` with the approach you want to use, the `N_CHANNELS` and `N_FILTERS` with the number of channels used and number of filters of the model. Make sure that the trained weights defined in `WEIGHTS_FILE` is consistent with the parameters defined. After that you can run:
+
+```
+python generate_inference.py
+```
+
+You may want to compare the output produced by the different architectures and also the masks. The script `generate_figures.py` applies the different networks trained on all patches from the image defined in the constant `IMAGE_NAME`. The output folder will have the output produced from the CNNs, the masks available and an image path with the combination of channels 7, 6 and 2 in a PNG format. This script can be run using:
+```
+python generate_figures.py
+```
+
+
+
+
+
+
