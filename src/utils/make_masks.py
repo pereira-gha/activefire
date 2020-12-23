@@ -14,28 +14,12 @@ import cv2
 import os
 import sys
 
-MASKS_DIR = '../../dataset/masks'
+
+MASKS_DIR = '../../dataset/masks/patches'
 
 MASKS_ALGORITHMS = ['Schroeder', 'Murphy', 'GOLI_v2']
 
-NUM_VOTINGS = 2
-
-IMAGE_SIZE = (256, 256)
-
-import pandas as pd
-import numpy as np
-import rasterio
-from glob import glob
-from functools import reduce
-from tqdm import tqdm
-import os
-import sys
-
-MASKS_DIR = '/home/andre/mask_patches/patches/'
-
-MASKS_ALGORITHMS = ['Schroeder', 'Murphy', 'GOLI_v2']
-
-OUTPUT_DIR = '/home/andre/mask_patches/'
+OUTPUT_DIR = '../../dataset/masks/'
 
 OUTPUT_INTERSECTION = os.path.join(OUTPUT_DIR, 'intersection')
 OUTPUT_VOTING = os.path.join(OUTPUT_DIR, 'voting')
@@ -48,7 +32,7 @@ def load_masks_in_dataframe():
 
     masks = glob(os.path.join(MASKS_DIR, '*.tif'))
 
-    print('Total de máscaras no diretórios: {}'.format(len(masks)))
+    print('Masks found: {}'.format(len(masks)))
 
     df = pd.DataFrame(masks ,columns=['masks_path'])
     df['original_name'] = df.masks_path.apply(os.path.basename)
