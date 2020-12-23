@@ -43,8 +43,8 @@ MODEL_NAME = 'unet'
 
 RANDOM_STATE = 42
 
-IMAGES_PATH = '../../../../dataset/images/'
-MASKS_PATH = '../../../../dataset/masks/'
+IMAGES_PATH = '../../../../dataset/images/patches/'
+MASKS_PATH = '../../../../dataset/masks/voting/'
 
 OUTPUT_DIR = './train_output/'
 

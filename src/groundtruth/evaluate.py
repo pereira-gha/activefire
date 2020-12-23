@@ -9,15 +9,14 @@ import os
 import sys
 import rasterio
 
-MANUAL_ANNOTATION_PATH = '/home/andre/GROUNDTRUTH/GROUNDTRUTH_GABRIEL_patches/'
-MASKS_PATH = '/home/andre/GROUNDTRUTH/ALL_MASKS_patches/'
+MANUAL_ANNOTATION_PATH = '../../dataset/groundtruth/patches/'
+MASKS_PATH = '../../dataset/groudtruth/masks/'
 
 # Para facilitar, se for teste com um diretório que não segue o padrão dos nomes das máscaras: *(GOLI_v2, Murphy, Schroeder)*.tif
 # Marque a flag como True. Com isso o diretório com as imagens será retornado em um dataframe, se False serão os dataframes serão separados com base no nome 
 IS_TEST = False
 
 MASKS_ALGORITHMS = ['Schroeder', 'Murphy', 'GOLI_v2']
-#MASKS_ALGORITHMS = ['GOLI_v2']
 
 # Desconsideras as mascaras que contem os seguintes itens no nome
 IGNORE_MANUAL_ANNOTATION_WITH_STR = ['v2']
@@ -44,7 +43,7 @@ def load_masks_path_as_dataframes():
     if IS_TEST:
         return {'Teste': df}
 
-    print('Separando máscaras...')
+    print('Spliting masks...')
     total = 0
     dataframes = {}
 
@@ -55,7 +54,7 @@ def load_masks_path_as_dataframes():
 
         num_images = len(dataframes[algorithm].index)
         total += num_images
-        print('{} - imagens: {}'.format(algorithm, num_images))
+        print('{} - images: {}'.format(algorithm, num_images))
 
     return dataframes
 
@@ -63,8 +62,8 @@ def load_masks_path_as_dataframes():
 def load_path_as_dataframe(mask_path):
     masks = glob(os.path.join(mask_path, '*.tif'))
 
-    print('Carregando diretório: {}'.format(mask_path))
-    print('Total de máscaras no diretórios: {}'.format(len(masks)))
+    print('Loading path: {}'.format(mask_path))
+    print('Files found: {}'.format(len(masks)))
 
     df = pd.DataFrame(masks, columns=['masks_path'])
     # recupera o nome da máscara pelo caminho dela
@@ -108,13 +107,13 @@ if __name__ == '__main__':
     df_manual = load_manual_annotation_masks_as_dataframe()
     dataframes = load_masks_path_as_dataframes()
 
-    print('Total anotacao manual: {}'.format( len( df_manual.index )) )
+    print('Num. Groundtruth: {}'.format( len( df_manual.index )) )
 
     for algorithm in dataframes:
 
         df_algorithm = dataframes[ algorithm ]
         
-        print('Algoritmo: {} - Num. Mascaras: {}'.format(algorithm, len(df_algorithm.index)))
+        print('Algorithm: {} - Num. Masks: {}'.format(algorithm, len(df_algorithm.index)))
 
         df = merge_dataframes(df_manual, df_algorithm)
 
