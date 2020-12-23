@@ -22,91 +22,126 @@ NUM_VOTINGS = 2
 
 IMAGE_SIZE = (256, 256)
 
-def load_images(path):
-    """Load images from path"""
-    masks = glob(os.path.join(path, '*.tif'))
+import pandas as pd
+import numpy as np
+import rasterio
+from glob import glob
+from functools import reduce
+from tqdm import tqdm
+import os
+import sys
 
-    images = []
-    for mask in masks:
-        for algorithm in MASKS_ALGORITHMS:
-            if '_RT_{}'.format(algorithm) in mask:
-                images.append(mask)
+MASKS_DIR = '/home/andre/mask_patches/patches/'
 
-    return images
+MASKS_ALGORITHMS = ['Schroeder', 'Murphy', 'GOLI_v2']
 
+OUTPUT_DIR = '/home/andre/mask_patches/'
+
+OUTPUT_INTERSECTION = os.path.join(OUTPUT_DIR, 'intersection')
+OUTPUT_VOTING = os.path.join(OUTPUT_DIR, 'voting')
+
+NUM_VOTINGS = 2
+
+IMAGE_SIZE = (256, 256)
+
+def load_masks_in_dataframe():
+
+    masks = glob(os.path.join(MASKS_DIR, '*.tif'))
+
+    print('Total de máscaras no diretórios: {}'.format(len(masks)))
+
+    df = pd.DataFrame(masks ,columns=['masks_path'])
+    df['original_name'] = df.masks_path.apply(os.path.basename)
+    df['image_name'] = df.original_name.apply(remove_algorithms_name)
+
+    print('Spliting masks...')
+    total = 0
+    dataframes = []
+
+    # separa as imagens com base no nome dos algoritmos geradores máscaras
+    for i, algorithm in enumerate(MASKS_ALGORITHMS):
+        dataframes.append( df[ df['original_name'].str.contains(algorithm) ] )
+    
+        num_images = len(dataframes[i].index)
+        total += num_images
+        print('{} - Images: {}'.format(algorithm, num_images))
+
+    return dataframes
 
 def remove_algorithms_name(mask_name):
-    """Remove the algorithms names from the mask name"""
+    """Remove o nome dos algoritmos do nome da máscara"""
 
     for algorithm in MASKS_ALGORITHMS:
-        print(mask_name)
         mask_name = mask_name.replace('_{}'.format(algorithm), '')
+
     return mask_name
 
 
-def make_intersection_masks(images):
+def make_intersection_masks(dataframes):
 
-    # mask "dont care"
-    final_mask = (np.ones(IMAGE_SIZE) == 1)
+    if not os.path.exists(OUTPUT_INTERSECTION):
+        print('Creating output dir: {}'.format(OUTPUT_INTERSECTION))
+        os.makedirs(OUTPUT_INTERSECTION)
+
+    df_joinend = reduce(lambda x, y: pd.merge(x, y, on = 'image_name'), dataframes)
+    print('Generating Intersection masks')
+    print('Images to process: {}'.format( len(df_joinend.index) ))
+    # recupera as colunas do dataframe que cotem os caminhos para as máscaras
+    masks_columns = [col for col in df_joinend.columns if col.startswith('masks_path')]
+
+    for index, row in tqdm(df_joinend.iterrows()):
+        # mascara "dont care" toda Verdadeira
+        final_mask = (np.ones(IMAGE_SIZE) == 1)
+        
+        for mask_column in masks_columns:
+            mask, profile = get_mask_arr(row[mask_column])
+            # intersecao das máscaras
+            final_mask = np.logical_and(final_mask, mask)
+
+        
+        has_fire = final_mask.sum() > 0
+        if has_fire:
+            write_mask(os.path.join(OUTPUT_INTERSECTION, row['image_name']), final_mask, profile)
     
-    for image in images:
-        mask  = get_mask_arr(image)
-        # intersecao das máscaras
-        final_mask = np.logical_and(final_mask, mask)
+    print('Intersection masks created')
 
-    
-    output_path = os.path.dirname(os.path.abspath(images[0]))
-    image_name = os.path.basename(images[0])
-    for alg in MASKS_ALGORITHMS:
-        image_name = image_name.replace('_RT_{}'.format(alg), '_RT_Intersection')
 
-    output_path = os.path.join(output_path, image_name)
-    write_mask(output_path, final_mask)
-    
-    print('Intersection masks created!')
+def make_voting_masks(dataframes):
+    if not os.path.exists(OUTPUT_VOTING):
+        print('Creating output dir: {}'.format(OUTPUT_VOTING))
+        os.makedirs(OUTPUT_VOTING)
 
-def make_union_masks(images):
+    df_joinend = reduce(lambda x, y: pd.merge(x, y, on = 'image_name', how='outer'), dataframes)
+    print('Generating Voting masks')
+    print('Images to process: {}'.format( len(df_joinend.index) ))
 
-    final_mask = (np.zeros(IMAGE_SIZE) == 1)
-    
-    for image in images:
-        mask  = get_mask_arr(image)
-        final_mask = np.logical_or(final_mask, mask)
+    # get the columns with the masks path
+    masks_columns = [col for col in df_joinend.columns if col.startswith('masks_path')]
 
-    
-    output_path = os.path.dirname(os.path.abspath(images[0]))
-    image_name = os.path.basename(images[0])
-    for alg in MASKS_ALGORITHMS:
-        image_name = image_name.replace('_RT_{}'.format(alg), '_RT_Union')
+    for index, row in tqdm(df_joinend.iterrows()):
+        # mascara "dont care" toda Falsa
+        final_mask = np.zeros(IMAGE_SIZE)
 
-    output_path = os.path.join(output_path, image_name)
-    write_mask(output_path, final_mask)
-    print('Union masks created!')
+        for mask_column in masks_columns:
 
-def make_voting_masks(images):
-    final_mask = np.zeros(IMAGE_SIZE)
-    
-    for image in images:
-        mask  = get_mask_arr(image)
-        final_mask += mask
+            if type(row[mask_column]) != str:
+                mask = (np.zeros(IMAGE_SIZE) == 1)
+            else:
+                mask, profile = get_mask_arr(row[mask_column])
 
-    final_mask = (final_mask >= NUM_VOTINGS)
-    
-    output_path = os.path.dirname(os.path.abspath(images[0]))
-    image_name = os.path.basename(images[0])
-    for alg in MASKS_ALGORITHMS:
-        image_name = image_name.replace('_RT_{}'.format(alg), '_RT_Voting')
+            final_mask += mask
 
-    output_path = os.path.join(output_path, image_name)
-    write_mask(output_path, final_mask)
-    print('Voting masks created!')
+        final_mask = (final_mask >= NUM_VOTINGS)
+
+        has_fire = final_mask.sum() > 0
+        if has_fire:
+            write_mask(os.path.join(OUTPUT_VOTING, row['image_name']), final_mask, profile)
         
 
-def get_mask_arr(path):
-    """ Abre a mascara como array"""
-    # mask = cv2.imread(path, cv2.COLOR_BGR2GRAY)
-    # return mask
+    print('Voting masks created!')
 
+
+def get_mask_arr(path):
     with rasterio.open(path) as src:
         img = src.read().transpose((1, 2, 0))
         seg = np.array(img, dtype=int)
@@ -115,10 +150,6 @@ def get_mask_arr(path):
 
 
 def write_mask(mask_path, mask, profile={}):
-    """Escreve as máscaras em disco"""
-    # mask = np.array(mask * 255, dtype=np.uint8)
-    # cv2.imwrite(mask_path, mask)
-
     profile.update({'dtype': rasterio.uint8,'count': 1})
 
     with rasterio.open(mask_path, 'w', **profile) as dst:
@@ -126,19 +157,8 @@ def write_mask(mask_path, mask, profile={}):
 
 
 
-folders = os.listdir(MASKS_DIR)
 
-for folder in folders:
-    path = os.path.join(MASKS_DIR, folder)
-
-    images = load_images(path)
-
-    if len(images) != len(MASKS_ALGORITHMS):
-        continue
-
-    make_intersection_masks(images)
-    make_union_masks(images)
-    make_voting_masks(images)
-
-print('DONE')
-
+if __name__ == '__main__':
+    dataframes = load_masks_in_dataframe()
+    make_intersection_masks(dataframes)
+    make_voting_masks(dataframes)
