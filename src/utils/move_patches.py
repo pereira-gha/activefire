@@ -8,9 +8,9 @@ from tqdm import tqdm
 IMAGES_FOLDER = '/home/andre/tif_patches/patches/'
 MASKS_FOLDER = '/home/andre/mask_patches/patches/'
 
-OUTPUT_FOLDER = '/home/andre/journal-dataset-and-code/dataset'
-OUTPUT_IMAGES = os.path.join(OUTPUT_FOLDER, 'images')
-OUTPUT_MASKS = os.path.join(OUTPUT_FOLDER, 'masks')
+OUTPUT_FOLDER = '/../../journal-dataset-and-code/dataset'
+OUTPUT_IMAGES = os.path.join(OUTPUT_FOLDER, 'images', 'patches')
+OUTPUT_MASKS = os.path.join(OUTPUT_FOLDER, 'masks', 'patches')
 
 CSV_IMAGES = [
     './dataset/goli/images_test.csv',
