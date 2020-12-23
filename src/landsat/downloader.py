@@ -21,19 +21,17 @@ AWS_L8 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
 MTL_EXTENSION = '_MTL.txt'
 ext = '.TIF'
 
-# IN_DIR = 'C:\\Users\\aloga\\Desktop\\Mestrado\\Downloads\\'
-# OUT_DIR = 'C:\\Users\\aloga\\Desktop\\Mestrado\\Downloads\\'
-IN_DIR = r'/home/gabriel/'
-#OUT_DIR = r'/home/gabriel/Landsat8_202009/'
-OUT_DIR = r'/media/hd2/Landsat8/Landsat8_202009/deserto/'
+IN_DIR = r'../../dataset/'
+OUT_DIR = r'../../dataset/images/tif_images/'
 
-if not os.path.exists(OUT_DIR): os.makedirs(OUT_DIR)             
+if not os.path.exists(OUT_DIR): 
+        os.makedirs(OUT_DIR)             
 
 
 #%%
 #===============================================================================
-csv = "images202009_deserto2.csv"
-df = pd.read_csv(IN_DIR + csv,sep=';')
+csv = "images202009.csv"
+df = pd.read_csv(os.path.join(IN_DIR, csv), sep=';')
 
 
 #%%

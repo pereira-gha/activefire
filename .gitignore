@@ -154,3 +154,7 @@ dmypy.json
 
 
 src/utils/dataset/*
+
+dataset/images/tif_images/*.TIF
+dataset/masks/*.TIF
+dataset/masks/*.png

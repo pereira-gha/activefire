@@ -29,12 +29,15 @@ MTL_EXTENSION = '_MTL.txt'
 #IN_DIR = r'/media/hd2/Landsat8/'
 #OUT_DIR = r'/media/hd2/Landsat8/ALL_MASKS/'
 
-IN_DIR = r'/media/hd2/Landsat8/Landsat8_202009/deserto/'
-OUT_DIR = r'/media/hd2/Landsat8/Landsat8_202009/deserto/ALL_MASKS/'
+IN_DIR = r'../../dataset/images/tif_images/'
+OUT_DIR = r'../../dataset/masks/'
 
 
-if not os.path.exists(OUT_DIR): os.makedirs(OUT_DIR)             
-if not os.path.exists(OUT_DIR+'patches/'): os.makedirs(OUT_DIR+'patches/')             
+if not os.path.exists(OUT_DIR): 
+    os.makedirs(OUT_DIR)             
+
+if not os.path.exists(OUT_DIR+'patches/'): 
+    os.makedirs(OUT_DIR+'patches/')             
 
 
 # IN_DIR = r'C:\Users\aloga\Desktop\Mestrado\Downloads\202008\\'
