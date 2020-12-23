@@ -41,8 +41,8 @@ MODEL_NAME = 'unet'
 
 RANDOM_STATE = 42
 
-IMAGES_PATH = '/home/andre/tif_patches/patches/'
-MASKS_PATH = '/home/andre/mask_patches/patches/'
+IMAGES_PATH = '../../../../dataset/images/'
+MASKS_PATH = '../../../../dataset/masks/'
 
 IMAGES_DATAFRAME = './dataset/images_masks.csv'
 
