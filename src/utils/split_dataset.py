@@ -36,7 +36,7 @@ IMAGES_DATAFRAME = os.path.join('/images_masks.csv')
 
 RANDOM_STATE = 42
 
-TRAIN_RATION = 0.4
+TRAIN_RATIO = 0.4
 VALIDATION_RATIO = 0.1
 TEST_RATIO = 0.5
 
@@ -62,7 +62,7 @@ df = pd.read_csv(IMAGES_DATAFRAME, header=None, names=['images', 'masks'])
 images_df = df[ ['images'] ]
 masks_df = df[ ['masks'] ]
 
-x_train, x_test, y_train, y_test = train_test_split(images_df, masks_df, test_size=1 - TRAIN_RATION, random_state=RANDOM_STATE)
+x_train, x_test, y_train, y_test = train_test_split(images_df, masks_df, test_size=1 - TRAIN_RATIO, random_state=RANDOM_STATE)
 x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=TEST_RATIO/(TEST_RATIO + VALIDATION_RATIO), random_state=RANDOM_STATE) 
 
 print(len(df.index), len(x_train.index), len(x_val.index), len(x_test.index))
