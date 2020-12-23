@@ -133,14 +133,21 @@ python generate_figures.py
 ## Useful stuff
 
 In the `src/utils` you will find some scripts that may help you understant the images and masks you are working with. For example, you may want to know how many fire pixels are in a mask, for this you can use the `count_fire_pixels.py` script. You just define the `IMAGE_NAME` with the desired mask name and run:
+
 ```
 python count_fire_pixels.py
 ```
 Alternatively you can define a partial name in the constant `IMAGE_NAME` and the `PATCHES_PATTERN` with a pattern to be found and count fire pixels from many patches.
 
+The masks has the value 1 where fire occurs and 0 otherwise, because of that the masks will not display "white" and "black" if oppened. To help you see the mask you can use the script `transform_mask.py`, this script will convert the image to a PNG with white where fire occurs with a black background. You just need to define the mask you want to convert in the constant `MASK_PATH` and run:
 
+```
+python transform_mask.py
+```
 
+The images available in the dataset are also difficult to view, as they are images with 10 channels. You can convert them into a visible format, with the combination of bands 7, 6 and 2, using the `convert_patch_to_3channels_image.py` script. You just need to set the path to the desired image in the constant `IMAGE` and run:
 
-
-
+```
+python convert_patch_to_3channels_image.py
+```
 
