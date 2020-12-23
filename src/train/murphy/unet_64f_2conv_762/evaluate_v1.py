@@ -154,7 +154,7 @@ for txt_mask_path, txt_pred_path in zip(txts_mask_path, txts_pred_path):
     
     try:
 
-        if txt_mask_path.replace('grd', 'det').replace('_Schroeder', '') != txt_pred_path:
+        if txt_mask_path.replace('grd', 'det').replace('_{}'.format(MASK_ALGORITHM), '') != txt_pred_path:
             print('[ERROR] Dont match {} - {}'.format(txt_mask_path, txt_pred_path))
             sys.exit()
 
@@ -165,20 +165,10 @@ for txt_mask_path, txt_pred_path in zip(txts_mask_path, txts_pred_path):
         y_pred = np.array(y_pred, dtype=np.uint8)
 
         y_pred = y_pred.flatten()
-        # y_pred_multi = y_pred.flatten()
         y_true = y_true.flatten()
 
         y_pred_all_v1.append(y_pred)
         y_true_all_v1.append(y_true)
-
-
-        # y_true_multi = connected_components (y_true)
-        # y_true_multi = y_true_multi.flatten()
-        # region_relabel (y_true_multi, y_pred_multi)
-
-        # y_pred_all_multi_v1.append(y_pred_multi)
-        # y_true_all_multi_v1.append(y_true_multi)
-
 
         jaccard_score_v1 = jaccard_score(y_true, y_pred, average='macro')
         jaccard_score_sum_v1 = jaccard_score_sum_v1 + jaccard_score_v1
@@ -190,13 +180,6 @@ for txt_mask_path, txt_pred_path in zip(txts_mask_path, txts_pred_path):
         pixel_accuracy_sum_v1 = pixel_accuracy_sum_v1 + pixel_accuracy_v1
 
         nsum_v1 = nsum_v1 + 1
-
-        # jaccard_score_multi_v1 = jaccard_score(y_true_multi, y_pred_multi, average='macro')
-        # jaccard_score_sum_multi_v1 = jaccard_score_sum_multi_v1 + jaccard_score_multi_v1
-
-        # pixel_accuracy_multi_v1 = pixel_accuracy(y_true_multi, y_pred_multi)
-        # pixel_accuracy_sum_multi_v1 = pixel_accuracy_sum_multi_v1 + pixel_accuracy_multi_v1
-
 
         count_fire_pixel_mask = np.sum(y_true)
         count_fire_pixel_pred = np.sum(y_pred)
@@ -216,41 +199,20 @@ for txt_mask_path, txt_pred_path in zip(txts_mask_path, txts_pred_path):
 y_pred_all_v1 = np.array(y_pred_all_v1, dtype=np.uint8)
 y_pred_all_v1 = y_pred_all_v1.flatten()
 
-# y_pred_all_multi_v1 = np.array(y_pred_all_multi_v1, dtype=np.uint8)
-# y_pred_all_multi_v1 = y_pred_all_multi_v1.flatten()
-
 y_true_all_v1 = np.array(y_true_all_v1, dtype=np.uint8)
 y_true_all_v1 = y_true_all_v1.flatten()
 
 print('y_true_all_v1 shape: ', y_true_all_v1.shape)
 print('y_pred_all_v1 shape: ', y_pred_all_v1.shape)
 
-
-# y_true_all_multi_v1 = np.array(y_true_all_multi_v1, dtype=np.uint8)
-# y_true_all_multi_v1 = y_true_all_multi_v1.flatten()
-
 print ('-------------------- ALL IMAGE-BY-IMAGE (BINARY) - V1')
 print ('mIoU (Jaccard-Average/Fire & Non-Fire):', float(jaccard_score_sum_v1)/nsum_v1)
 print ('F1-score (Dice/Fire & Non-Fire):', float(f1_score_sum_v1)/nsum_v1)
 print ('Pixel-accuracy (IoU fire):', float(pixel_accuracy_sum_v1)/nsum_v1)
 
-
-# print ('-------------------- ALL IMAGE-BY-IMAGE (MULTICLASS) - V1')
-# print ('mIoU (Jaccard-Average/Fire & Non-Fire):', float(jaccard_score_sum_multi_v1)/nsum_v1)
-# print ('Pixel-accuracy (IoU fire):', float(pixel_accuracy_sum_multi_v1)/nsum_v1)
-
-
 print ('-------------------- ALL (BINARY) - V1')
-# print ('mIoU (Jaccard-Average/Fire & Non-Fire):', jaccard_score(y_true_all_v1, y_pred_all_v1, average='macro'))
-# print ('mIoU (Jaccard/Per class Fire & Non-Fire):', jaccard_score(y_true_all_v1, y_pred_all_v1, average=None))
-# print ('F1-score (Dice/Fire & Non-Fire):', f1_score(y_true_all_v1, y_pred_all_v1))
-# print ('Pixel-accuracy (IoU fire):', pixel_accuracy(y_true_all_v1, y_pred_all_v1))
-#print ('Statistics (tn, fp, fn, tp):', statistics (y_true_all_v1, y_pred_all_v1))
-#print ('Statistics2 (tn, fp, fn, tp):', statistics2 (y_true_all_v1, y_pred_all_v1))
-
 print ('mIoU (Jaccard3):', jaccard3 (y_true_all_v1, y_pred_all_v1))
 
-#tn, fp, fn, tp = statistics2 (y_true_all_v1, y_pred_all_v1)
 tn, fp, fn, tp = statistics3 (y_true_all_v1, y_pred_all_v1)
 print ('Statistics3 (tn, fp, fn, tp):', tn, fp, fn, tp)
 
@@ -260,9 +222,3 @@ IoU = float(tp)/(tp+fp+fn)
 Acc = float((tp+tn))/(tp+tn+fp+fn)
 F = (2 * P * R)/(P + R)
 print ('P: :', P, ' R: ', R, ' IoU: ', IoU, ' Acc: ', Acc, ' F-score: ', F)
-
-
-# print ('-------------------- ALL (MULTICLASS) - V1')
-# print ('mIoU (Jaccard-Average/Fire & Non-Fire):', jaccard_score(y_true_all_multi_v1, y_pred_all_multi_v1, average='macro'))
-# print ('mIoU (Jaccard/Per class Fire & Non-Fire):', jaccard_score(y_true_all_multi_v1, y_pred_all_multi_v1, average=None))
-# print ('Pixel-accuracy (IoU fire):', pixel_accuracy(y_true_all_multi_v1, y_pred_all_multi_v1))
