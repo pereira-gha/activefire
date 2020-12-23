@@ -154,5 +154,3 @@ dmypy.json
 
 
 src/utils/dataset/*
-
-*.h5
