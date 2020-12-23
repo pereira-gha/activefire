@@ -156,5 +156,13 @@ dmypy.json
 src/utils/dataset/*
 
 dataset/images/tif_images/*.TIF
+dataset/images/patches/*.TIF
+dataset/images/patches/*.tif
+
 dataset/masks/*.TIF
 dataset/masks/*.png
+dataset/masks/patches/*.TIF
+dataset/masks/patches/*.tif
+dataset/masks/intersection/*.tif
+dataset/masks/voting/*.tif
+
