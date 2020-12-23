@@ -31,13 +31,17 @@ MASK_ALGORITHM = 'GOLI_v2'
 
 IMAGES_PATH = '../../dataset/images'
 MASKS_PATH = '../../dataset/masks'
-IMAGES_DATAFRAME = './dataset/images_masks.csv'
+OUTPUT_FOLDER = './dataset'
+IMAGES_DATAFRAME = os.path.join('/images_masks.csv')
 
 RANDOM_STATE = 42
 
 TRAIN_RATION = 0.4
 VALIDATION_RATIO = 0.1
 TEST_RATIO = 0.5
+
+if os.path.exists(OUTPUT_FOLDER):
+    os.makedirs(OUTPUT_FOLDER)
 
 masks = glob.glob(os.path.join(MASKS_PATH, '*{}*.tif'.format(MASK_ALGORITHM)))
 
@@ -63,9 +67,11 @@ x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=TEST_R
 
 print(len(df.index), len(x_train.index), len(x_val.index), len(x_test.index))
 
-x_train.to_csv('./dataset/images_train.csv', index=False)
-y_train.to_csv('./dataset/masks_train.csv', index=False)
-x_val.to_csv('./dataset/images_val.csv', index=False)
-y_val.to_csv('./dataset/masks_val.csv', index=False)
-x_test.to_csv('./dataset/images_test.csv', index=False)
-y_test.to_csv('./dataset/masks_test.csv', index=False)
+x_train.to_csv(os.path.join(OUTPUT_FOLDER, 'images_train.csv'), index=False)
+y_train.to_csv(os.path.join(OUTPUT_FOLDER, 'masks_train.csv'), index=False)
+x_val.to_csv(os.path.join(OUTPUT_FOLDER, 'images_val.csv'), index=False)
+y_val.to_csv(os.path.join(OUTPUT_FOLDER, 'masks_val.csv'), index=False)
+x_test.to_csv(os.path.join(OUTPUT_FOLDER, 'images_test.csv'), index=False)
+y_test.to_csv(os.path.join(OUTPUT_FOLDER, 'masks_test.csv'), index=False)
+
+print('Done!')
