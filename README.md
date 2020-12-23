@@ -92,7 +92,7 @@ python evaluate_v1.py
 
 This will show the results to your model.
 
-If you face the message `[ERROR] Dont match X - Y` thit means that a mask or a prediction is missing. Make sure all predictions produced by your model have a corresponding mask.
+If you face the message `[ERROR] Dont match X - Y` this means that a mask or a prediction is missing. Make sure all predictions produced by your model have a corresponding mask.
 
 
 ## Compare against the Groundtruth
