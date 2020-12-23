@@ -9,9 +9,11 @@ import numpy as np
 import rasterio 
 
 
-IMAGE_NAME = 'LC08_L1TP_046031_20200908_20200908_01_RT'
-IMAGE_PATH = '/home/andre/GROUNDTRUTH/GROUNDTRUTH_GABRIEL_patches/'
-PATCHES_PATTERN = '*_v1_*.tif'
+MASK_NAME = 'LC08_L1GT_117060_20200825_20200825_01_RT_GOLI_v2_p00625.tif'
+#IMAGE_NAME = 'LC08_L1GT_117060_20200825_20200825_01_RT_GOLI_v2'
+
+MASK_PATH = '../../dataset/masks/patches'
+PATCHES_PATTERN = '*.tif'
 
 def get_mask_arr(path):
     """ Abre a mascara como array"""
@@ -24,13 +26,13 @@ def get_mask_arr(path):
 
 if __name__ == '__main__':
 
-    image_name = IMAGE_NAME
-    if not IMAGE_NAME.endswith('.tif'):
-        image_name = IMAGE_NAME + PATCHES_PATTERN
+    image_name = MASK_NAME
+    if not MASK_NAME.endswith('.tif'):
+        image_name = MASK_NAME + PATCHES_PATTERN
 
-    images_path = glob(os.path.join(IMAGE_PATH, image_name))
-    print('Image: {}'.format(image_name))
-    print('Total imagens found: {}'.format( len(images_path) ))
+    images_path = glob(os.path.join(MASK_PATH, image_name))
+    print('Mask: {}'.format(image_name))
+    print('Total images found: {}'.format( len(images_path) ))
     count = 0
     for image_path in images_path:
         mask = get_mask_arr(image_path)

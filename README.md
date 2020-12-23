@@ -130,6 +130,15 @@ You may want to compare the output produced by the different architectures and a
 python generate_figures.py
 ```
 
+## Useful stuff
+
+In the `src/utils` you will find some scripts that may help you understant the images and masks you are working with. For example, you may want to know how many fire pixels are in a mask, for this you can use the `count_fire_pixels.py` script. You just define the `IMAGE_NAME` with the desired mask name and run:
+```
+python count_fire_pixels.py
+```
+Alternatively you can define a partial name in the constant `IMAGE_NAME` and the `PATCHES_PATTERN` with a pattern to be found and count fire pixels from many patches.
+
+
 
 
 
