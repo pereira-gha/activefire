@@ -151,3 +151,17 @@ The images available in the dataset are also difficult to view, as they are imag
 python convert_patch_to_3channels_image.py
 ```
 
+## Citation
+
+If you find our work useful in your research, please cite our paper:
+
+```
+@misc{pereira2021active,
+      title={Active Fire Detection in Landsat-8 Imagery: a Large-Scale Dataset and a Deep-Learning Study}, 
+      author={Gabriel Henrique de Almeida Pereira and André Minoro Fusioka and Bogdan Tomoyuki Nassu and Rodrigo Minetto},
+      year={2021},
+      eprint={2101.03409},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
