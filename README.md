@@ -31,6 +31,21 @@ Alternatively, this repository contains some samples that can be used in your ex
 python unzip_patches.py
 ```
 
+**Atention:** The zip files in this repository are versioned in the Git Large File Storage (LFS), because of that, when you clone this repository the zip files may be corrupted (see [issue #2](https://github.com/pereira-gha/activefire/issues/2)). To fix that you can download manually the zip files and replace your local ones:
+
+To download the zip files directly from the GitHub repository:
+[patches.zip](https://github.com/pereira-gha/activefire/blob/main/dataset/images/patches.zip) or the [direct link](https://github.com/pereira-gha/activefire/raw/main/dataset/images/patches.zip)
+
+The `patches.zip` should be placed at `<your-local-code>/dataset/images/patches.zip`
+
+To download the Kumar and Roy (2018) masks: [patches_goli.zip](https://github.com/pereira-gha/activefire/blob/main/dataset/masks/patches_goli.zip) or [direct download](https://github.com/pereira-gha/activefire/raw/main/dataset/masks/patches_goli.zip)
+
+To download the Murphy et al. (2016) masks: [patches_murphy.zip](https://github.com/pereira-gha/activefire/blob/main/dataset/masks/patches_murphy.zip) or [direct download](https://github.com/pereira-gha/activefire/raw/main/dataset/masks/patches_murphy.zip)
+
+To download the Schroeder  et  al.  (2016) masks: [patches_schoreder.zip](https://github.com/pereira-gha/activefire/blob/main/dataset/masks/patches_schroeder.zip) or [direct download](https://github.com/pereira-gha/activefire/raw/main/dataset/masks/patches_schroeder.zip)
+
+This zip files should be placed at `<your-local-code>/dataset/masks/patches_*.zip`
+
 Besides this masks we used artificial masks created by the combination of the previous one. You will find a script `src/utils/make_masks.py` that can help you to create this artificial masks. It will generate a mask based on the intersection of the previous masks and the voting of occurence of fire, where at least two masks must agree where fire occurs. These masks will be saved at `dataset/masks/intersection` and `dataset/masks/voting` folders.
 
 ## Models
