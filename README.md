@@ -168,7 +168,7 @@ python convert_patch_to_3channels_image.py
 
 ## Citation
 
-If you find our work useful in your research, please cite our paper:
+If you find our work useful in your research, please [cite our paper](https://arxiv.org/abs/2101.03409):
 
 ```
 @misc{pereira2021active,
