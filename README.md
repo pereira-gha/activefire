@@ -9,7 +9,7 @@
 
 [Bogdan Tomoyuki Nassu](https://github.com/btnassu)
 
-Rodrigo Minetto
+[Rodrigo Minetto](https://github.com/rminetto)
 
 
 ## Downloading the data and creating the masks
