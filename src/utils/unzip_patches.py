@@ -4,7 +4,7 @@ import os
 
 IMAGES_PATH = '../../dataset/images'
 MASKS_PATH = '../../dataset/masks'
-
+GROUNDTRUTH_PATH = '../../dataset/groundtruth'
 
 images_zips = glob(os.path.join(IMAGES_PATH, '*.zip'))
 
@@ -19,4 +19,10 @@ masks_zips = glob(os.path.join(MASKS_PATH, '*.zip'))
 for mask_zip in masks_zips:
     with zipfile.ZipFile(mask_zip, 'r') as zip_ref:
         zip_ref.extractall(MASKS_PATH)
+
+
+groundtruth_zips = glob(os.path.join(GROUNDTRUTH_PATH, '*.zip'))
+for groundtruth_zip in groundtruth_zips:
+    with zipfile.ZipFile(groundtruth_zip, 'r') as zip_ref:
+        zip_ref.extractall(GROUNDTRUTH_PATH)
 

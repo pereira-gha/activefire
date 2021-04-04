@@ -166,3 +166,5 @@ dataset/masks/patches/*.tif
 dataset/masks/intersection/*.tif
 dataset/masks/voting/*.tif
 
+dataset/groundtruth/manual_annotation/*.tif
+dataset/groundtruth/masks/*.tif
