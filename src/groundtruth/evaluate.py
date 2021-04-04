@@ -9,8 +9,8 @@ import os
 import sys
 import rasterio
 
-MANUAL_ANNOTATION_PATH = '../../dataset/groundtruth/patches/'
-MASKS_PATH = '../../dataset/groudtruth/masks/'
+MANUAL_ANNOTATION_PATH = '../../dataset/groundtruth/manual_annotation/'
+MASKS_PATH = '../../dataset/groundtruth/masks/'
 
 # Para facilitar, se for teste com um diretório que não segue o padrão dos nomes das máscaras: *(GOLI_v2, Murphy, Schroeder)*.tif
 # Marque a flag como True. Com isso o diretório com as imagens será retornado em um dataframe, se False serão os dataframes serão separados com base no nome 
@@ -142,9 +142,8 @@ if __name__ == '__main__':
 
             y_pred = y_pred.flatten()
             y_true = y_true.flatten()
-            
+
             ttn, tfp, tfn, ttp = statistics3 (y_true, y_pred)
-            print (row['masks_path_x'], row['masks_path_y'], 'tn: ', ttn, 'fp: ', tfp, 'fn: ', tfn, 'tp: ', ttp)
 
             y_pred_all_v1.append(y_pred)
             y_true_all_v1.append(y_true)
