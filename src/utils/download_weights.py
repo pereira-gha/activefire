@@ -7,7 +7,7 @@ You can find the weights here: https://drive.google.com/drive/folders/1btWS6o-Zb
 import gdown
 import os
 
-OUTPUT_FOLDER = '../../weights/'
+OUTPUT_DIR = '../../weights/'
 
 BASE_URL = 'https://drive.google.com/uc?id={}'
 
@@ -30,12 +30,12 @@ def download_file(file_id, output):
 
 if __name__ == '__main__':
 
-    if not os.path.exists(OUTPUT_FOLDER):
-        os.makedirs(OUTPUT_FOLDER)
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
 
     for algorithm in WEIGHT_FILES:
         
         zip_file_name = '{}.zip'.format(algorithm)
-        output = os.path.join(OUTPUT_FOLDER, zip_file_name)
+        output = os.path.join(OUTPUT_DIR, zip_file_name)
 
         download_file(WEIGHT_FILES[algorithm], output)

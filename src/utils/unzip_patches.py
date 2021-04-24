@@ -3,11 +3,14 @@ from glob import glob
 import os
 import shutil
 
+# Set to false if you are uncompressing the samples provided in the GitHub repository
 FULL_DATASET = True
 
+# This constans are used if you are unziping the *small* samples patches
+# You can put the zips inside this directories and unzip it. 
 IMAGES_PATH = '../../dataset/images'
 MASKS_PATH = '../../dataset/masks'
-GROUNDTRUTH_PATH = '../../dataset/groundtruth'
+GROUNDTRUTH_PATH = '../../dataset/manual_annotation'
 
 FULL_DATASET_ZIPS_PATH = '../../dataset/compressed/'
 FULL_DATASET_UNZIP_PATH = '../../dataset/'

@@ -8,11 +8,11 @@ import zipfile
 import shutil
 
 # Change this constant to the folder where you put the ziped weights
-ZIPED_WIEGHTS_DIR = '../../weights'
+ZIPED_WEIGHTS_DIR = '../../weights'
 
 # If you need change the paths to your custom structure
 TRAIN_DIR = '../train/'
-MANUAL_ANNOTATIONS_CNN_DIR = '../manual_annotations/cnn_compare'
+UNZIP_TO_MANUAL_ANNOTATIONS_CNN = '../manual_annotations/cnn_compare'
 
 # Set to true where you want to put a copy of the unziped weights
 UNZIP_TO_TRAIN = True
@@ -28,9 +28,9 @@ def unzip_to_folder(input_zip, output_folder):
     with zipfile.ZipFile(input_zip, 'r') as zip_ref:
         zip_ref.extractall(output_folder)
 
-ziped_files = glob(os.path.join(ZIPED_WIEGHTS_DIR, '*.zip'))
+ziped_files = glob(os.path.join(ZIPED_WEIGHTS_DIR, '*.zip'))
 
-tmp_dir = os.path.join(ZIPED_WIEGHTS_DIR, 'tmp')
+tmp_dir = os.path.join(ZIPED_WEIGHTS_DIR, 'tmp')
 create_folder(tmp_dir)
 
 for ziped_file in ziped_files:
@@ -59,7 +59,7 @@ for algorithm in algorithms:
             shutil.copy2(weight_path, target_folder)
 
         if UNZIP_TO_MANUAL_ANNOTATNIOS_CNN:
-            target_folder = os.path.join(MANUAL_ANNOTATIONS_CNN_DIR, algorithm, architecture, 'weights')
+            target_folder = os.path.join(UNZIP_TO_MANUAL_ANNOTATIONS_CNN, algorithm, architecture, 'weights')
             create_folder(target_folder)
 
             print('Coping {} to {}'.format(weight_path, target_folder))
