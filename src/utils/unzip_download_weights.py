@@ -15,7 +15,7 @@ TRAIN_DIR = '../train/'
 MANUAL_ANNOTATIONS_CNN_DIR = '../manual_annotations/cnn_compare'
 
 # Set to true where you want to put a copy of the unziped weights
-UNZIP_TO_TRAIN = False
+UNZIP_TO_TRAIN = True
 UNZIP_TO_MANUAL_ANNOTATNIOS_CNN = True
 
 
