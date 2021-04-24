@@ -15,7 +15,7 @@ import pandas as pd
 
 start = time.time()
 
-# Schoeder, Murphy or GOLI
+# Schoeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Intersection'
 IMAGE_SIZE = (256, 256)
 
@@ -202,23 +202,10 @@ y_pred_all_v1 = y_pred_all_v1.flatten()
 y_true_all_v1 = np.array(y_true_all_v1, dtype=np.uint8)
 y_true_all_v1 = y_true_all_v1.flatten()
 
-print('y_true_all_v1 shape: ', y_true_all_v1.shape)
-print('y_pred_all_v1 shape: ', y_pred_all_v1.shape)
-
-print ('-------------------- ALL IMAGE-BY-IMAGE (BINARY) - V1')
-print ('mIoU (Jaccard-Average/Fire & Non-Fire):', float(jaccard_score_sum_v1)/nsum_v1)
-print ('F1-score (Dice/Fire & Non-Fire):', float(f1_score_sum_v1)/nsum_v1)
-print ('Pixel-accuracy (IoU fire):', float(pixel_accuracy_sum_v1)/nsum_v1)
-
-print ('-------------------- ALL (BINARY) - V1')
-print ('mIoU (Jaccard3):', jaccard3 (y_true_all_v1, y_pred_all_v1))
-
 tn, fp, fn, tp = statistics3 (y_true_all_v1, y_pred_all_v1)
-print ('Statistics3 (tn, fp, fn, tp):', tn, fp, fn, tp)
 
 P = float(tp)/(tp + fp)
 R = float(tp)/(tp + fn)
 IoU = float(tp)/(tp+fp+fn)
-Acc = float((tp+tn))/(tp+tn+fp+fn)
 F = (2 * P * R)/(P + R)
-print ('P: :', P, ' R: ', R, ' IoU: ', IoU, ' Acc: ', Acc, ' F-score: ', F)
+print ('P: :', P, ' R: ', R, ' IoU: ', IoU, ' F-score: ', F)

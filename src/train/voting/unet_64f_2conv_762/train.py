@@ -30,7 +30,7 @@ from keras.preprocessing.image import ImageDataGenerator
 # if True plot the training and validation graphs
 PLOT_HISTORY = True 
 
-# Schoeder, Murphy or GOLI_v2 - Intersection or Union
+# Schoeder, Murphy or Kumar-Roy - Intersection or Union
 MASK_ALGORITHM = 'Voting'
 
 N_FILTERS = 64

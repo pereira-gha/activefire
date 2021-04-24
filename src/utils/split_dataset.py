@@ -26,8 +26,8 @@ from sklearn.model_selection import train_test_split
 
 from keras.preprocessing.image import ImageDataGenerator
 
-# Schroeder, Murphy or GOLI_v2
-MASK_ALGORITHM = 'GOLI_v2'
+# Schroeder, Murphy or Kumar-Roy
+MASK_ALGORITHM = 'Kumar-Roy'
 
 IMAGES_PATH = '../../dataset/images'
 MASKS_PATH = '../../dataset/masks'

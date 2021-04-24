@@ -33,14 +33,18 @@ def threadsafe_generator(f):
 
     return g
 
-
-
 def get_img_arr(path):
     img = rasterio.open(path).read().transpose((1, 2, 0))    
     img = np.float32(img)/MAX_PIXEL_VALUE
     
     return img
 
+def get_img_762bands(path):
+    img = rasterio.open(path).read((7,6,2)).transpose((1, 2, 0))    
+    img = np.float32(img)/MAX_PIXEL_VALUE
+    
+    return img
+    
 def get_mask_arr(path):
     img = rasterio.open(path).read().transpose((1, 2, 0))
     seg = np.float32(img)
@@ -49,10 +53,16 @@ def get_mask_arr(path):
 
 
 @threadsafe_generator
-def generator_from_lists(images_path, masks_path, batch_size=32, shuffle = True, random_state=None):
+def generator_from_lists(images_path, masks_path, batch_size=32, shuffle = True, random_state=None, image_mode='10bands'):
    
     images = []
     masks = []
+
+    fopen_image = get_img_arr
+    fopen_mask = get_mask_arr
+
+    if image_mode == '762':
+        fopen_image = get_img_762bands
 
     i = 0 # used to shuffle samples
     while True:
@@ -67,8 +77,8 @@ def generator_from_lists(images_path, masks_path, batch_size=32, shuffle = True,
 
         for img_path, mask_path in zip(images_path, masks_path):
 
-            img = get_img_arr(img_path)
-            mask = get_mask_arr(mask_path)
+            img = fopen_image(img_path)
+            mask = fopen_mask(mask_path)
             images.append(img)
             masks.append(mask)
 

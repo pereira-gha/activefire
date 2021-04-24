@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import os
 
-MASK_PATH = '../../dataset/masks/patches/LC08_L1GT_117060_20200825_20200825_01_RT_GOLI_v2_p00625.tif'
+MASK_PATH = '../../dataset/masks/patches/LC08_L1GT_117060_20200825_20200825_01_RT_Kumar-Roy_p00625.tif'
 OUTPUT_DIR = './output'
 OUTPUT_NAME = 'mask.png'
 

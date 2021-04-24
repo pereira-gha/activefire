@@ -35,7 +35,7 @@ import glob
 
 start = time.time()
 
-# Schoeder, Murphy or GOLI
+# Schoeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Murphy'
 
 CUDA_DEVICE = 0

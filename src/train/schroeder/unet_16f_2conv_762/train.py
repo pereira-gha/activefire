@@ -30,7 +30,7 @@ from keras.preprocessing.image import ImageDataGenerator
 # if True plot the training and validation graphs
 PLOT_HISTORY = True 
 
-# Schoeder, Murphy or GOLI
+# Schoeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Schroeder'
 
 N_FILTERS = 16
@@ -105,8 +105,8 @@ masks_train = [ os.path.join(MASKS_PATH, mask) for mask in y_train['masks'] ]
 images_validation = [ os.path.join(IMAGES_PATH, image) for image in x_val['images'] ]
 masks_validation = [ os.path.join(MASKS_PATH, mask) for mask in y_val['masks'] ]
 
-train_generator = generator_from_lists(images_train, masks_train, batch_size=BATCH_SIZE, random_state=RANDOM_STATE)
-validation_generator = generator_from_lists(images_validation, masks_validation, batch_size=BATCH_SIZE, random_state=RANDOM_STATE)
+train_generator = generator_from_lists(images_train, masks_train, batch_size=BATCH_SIZE, random_state=RANDOM_STATE, image_mode="762")
+validation_generator = generator_from_lists(images_validation, masks_validation, batch_size=BATCH_SIZE, random_state=RANDOM_STATE, image_mode="762")
 
 model = get_model(MODEL_NAME, input_height=IMAGE_SIZE[0], input_width=IMAGE_SIZE[1], n_filters=N_FILTERS)
 

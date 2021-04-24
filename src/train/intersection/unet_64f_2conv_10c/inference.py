@@ -35,7 +35,7 @@ import glob
 
 start = time.time()
 
-# Schoeder, Murphy, GOLI_v2 Intersection or Union
+# Schoeder, Murphy, Kumar-Roy Intersection or Union
 MASK_ALGORITHM = 'Intersection'
 
 CUDA_DEVICE = 1

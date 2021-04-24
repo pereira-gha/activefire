@@ -60,11 +60,11 @@ PARAMETERS_MASKS = {
             'unet_light': '../../train/murphy/unet_16f_2conf_762/train_output/model_unet_Murphy_final_weights.h5',
         }
     },
-    'GOLI_v2' : {
+    'Kumar-Roy' : {
         'weights': {
-            'unet_10b': '../../train/goli/unet_64f_2conf_10c/train_output/model_unet_GOLI_v2_final_weights.h5',
-            'unet_3b': '../../train/goli/unet_64f_2conf_762/train_output/model_unet_GOLI_v2_final_weights.h5',
-            'unet_light': '../../train/goli/unet_16f_2conf_762/train_output/model_unet_GOLI_v2_final_weights.h5',
+            'unet_10b': '../../train/kumar-roy/unet_64f_2conf_10c/train_output/model_unet_Kumar-Roy_final_weights.h5',
+            'unet_3b': '../../train/kumar-roy/unet_64f_2conf_762/train_output/model_unet_Kumar-Roy_final_weights.h5',
+            'unet_light': '../../train/kumar-roy/unet_16f_2conf_762/train_output/model_unet_Kumar-Roy_final_weights.h5',
         }
     },
     'Intersection' : {
@@ -84,7 +84,6 @@ PARAMETERS_MASKS = {
 }
 
 IMAGE_SIZE = (256, 256)
-TH_FIRE = 0.25
 MAX_PIXEL_VALUE = 65535
 
 OUTPUT_PATH = os.path.join('./figuras/RGB/', str(MIN_FIRE_PIXELS))

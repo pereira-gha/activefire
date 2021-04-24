@@ -26,7 +26,7 @@ from sklearn.model_selection import train_test_split
 
 from keras.preprocessing.image import ImageDataGenerator
 
-# Schoeder, Murphy, GOLI_v2, Intersection or Union
+# Schoeder, Murphy, Kumar-Roy, Intersection or Union
 MASK_ALGORITHM = 'Intersection'
 
 IMAGES_PATH = '/home/andre/tif_patches/patches/'

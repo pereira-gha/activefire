@@ -23,7 +23,7 @@ IMAGE_SIZE = (256, 256)
 TH_FIRE = 0.25
 
 # ajusta o nome da pasta que estão os pesos
-MODEL_FOLDER_NAME = 'goli' if MASK_ALGORITHM == 'GOLI_v2' else MASK_ALGORITHM
+MODEL_FOLDER_NAME = 'kumar-roy' if MASK_ALGORITHM == 'Kumar-Roy' else MASK_ALGORITHM
 ARCHITECTURE = '{}_{}f_2conv_{}'.format( MODEL_NAME, N_FILTERS, '10c' if N_CHANNELS == 10 else '762' )
 
 WEIGHTS_FILE = '../../train/{}/{}/weights/model_{}_{}_final_weights.h5'.format(MODEL_FOLDER_NAME, ARCHITECTURE, MODEL_NAME, MASK_ALGORITHM)

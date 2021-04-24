@@ -322,9 +322,9 @@ def Seq7_8_9 (bands):
 
 
 #===============================================================================
-# EQUATIONS (GOLI)
+# EQUATIONS (Kumar-Roy)
 #===============================================================================
-# The following functions implement the equations in the GOLI's paper.
+# The following functions implement the equations in the Kumar-Roy's paper.
 
 def Geq12 (bands):
     '''Eq 12 (unambiguous fires).'''
@@ -577,9 +577,9 @@ Return value: none. Saves the output to a .tif file in the output directory,
 
 
     fire_mask = getFireMaskGOLI (corrected)
-    save_masks(out_dir, image_name, profile, fire_mask, 'GOLI_v2')
-    if os.path.exists(out_dir + image_name + '_' + 'GOLI_v2' + '.TIF'):
-        _ = get_split(out_dir + image_name + '_' + 'GOLI_v2' + '.TIF',out_dir+'patches/')
+    save_masks(out_dir, image_name, profile, fire_mask, 'Kumar-Roy')
+    if os.path.exists(out_dir + image_name + '_' + 'Kumar-Roy' + '.TIF'):
+        _ = get_split(out_dir + image_name + '_' + 'Kumar-Roy' + '.TIF',out_dir+'patches/')
 
     fire_mask = getFireMaskMurphy (corrected,sat)
     save_masks(out_dir, image_name, profile, fire_mask, 'Murphy')

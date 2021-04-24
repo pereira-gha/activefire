@@ -26,7 +26,7 @@ from sklearn.model_selection import train_test_split
 
 from keras.preprocessing.image import ImageDataGenerator
 
-# Schoeder, Murphy or GOLI
+# Schoeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Murphy'
 
 IMAGES_PATH = '/home/andre/tif_patches/patches/'

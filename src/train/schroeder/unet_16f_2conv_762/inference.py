@@ -35,20 +35,22 @@ import glob
 
 start = time.time()
 
-# Schoeder, Murphy or GOLI
+# Schoeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Schroeder'
 
 CUDA_DEVICE = 0
 
 N_FILTERS = 16
+N_CHANNELS = 3
 
 IMAGE_SIZE = (256, 256)
 MODEL_NAME = 'unet'
 
 RANDOM_STATE = 42
 
-IMAGES_PATH = '/home/andre/tif_patches/patches/'
-MASKS_PATH = '/home/andre/mask_patches/patches/'
+IMAGES_PATH = '../../../../dataset/images/patches/'
+MASKS_PATH = '../../../../dataset/masks/patches/'
+
 IMAGES_CSV = './dataset/images_test.csv'
 MASKS_CSV = './dataset/masks_test.csv'
 
@@ -90,7 +92,7 @@ masks = [ os.path.join(MASKS_PATH, mask) for mask in masks_df['masks'] ]
 # print('# of Masks: {}'.format( len(masks)) )
 
 
-model = get_model(MODEL_NAME, input_height=IMAGE_SIZE[0], input_width=IMAGE_SIZE[1], n_filters=N_FILTERS)
+model = get_model(MODEL_NAME, input_height=IMAGE_SIZE[0], input_width=IMAGE_SIZE[1], n_filters=N_FILTERS, n_channels=N_CHANNELS)
 
 model.summary()
 
@@ -108,7 +110,8 @@ for image, mask in zip(images, masks):
     
     try:
         
-        img = get_img_arr(image)
+        # img = get_img_arr(image)
+        img = get_img_762bands(image)
         
         mask_name = os.path.splitext(os.path.basename(mask))[0]
         image_name = os.path.splitext(os.path.basename(image))[0]
