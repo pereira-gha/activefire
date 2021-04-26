@@ -29,11 +29,11 @@ def split_images(input_dir, output_dir):
 if __name__ == '__main__':
     images_dir = os.path.join(INPUT_ANNOTATION_SCENE_DIR, 'images')
     masks_dir = os.path.join(INPUT_ANNOTATION_SCENE_DIR, 'masks')
-    manual_annotation_dir = os.path.join(INPUT_ANNOTATION_SCENE_DIR, 'manual_annotations')
+    manual_annotation_dir = os.path.join(INPUT_ANNOTATION_SCENE_DIR, 'annotations')
 
     output_images_dir = os.path.join(OUTPUT_ANNOTATION_PATCHES, 'images')
     output_masks_dir = os.path.join(OUTPUT_ANNOTATION_PATCHES, 'masks')
-    output_manual_annotation_dir = os.path.join(OUTPUT_ANNOTATION_PATCHES, 'manual_annotations')
+    output_manual_annotation_dir = os.path.join(OUTPUT_ANNOTATION_PATCHES, 'annotations')
 
     split_images(images_dir, output_images_dir)
     split_images(masks_dir, output_masks_dir)

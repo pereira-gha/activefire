@@ -10,7 +10,7 @@ FULL_DATASET = True
 # You can put the zips inside this directories and unzip it. 
 IMAGES_PATH = '../../dataset/images'
 MASKS_PATH = '../../dataset/masks'
-GROUNDTRUTH_PATH = '../../dataset/manual_annotation'
+MANUAL_ANNOTATIONS_PATH = '../../dataset/manual_annotations'
 
 FULL_DATASET_ZIPS_PATH = '../../dataset/compressed/'
 FULL_DATASET_UNZIP_PATH = '../../dataset/'
@@ -107,17 +107,15 @@ else :
             zip_ref.extractall(IMAGES_PATH)
 
 
-
-
     masks_zips = glob(os.path.join(MASKS_PATH, '*.zip'))
     for mask_zip in masks_zips:
         with zipfile.ZipFile(mask_zip, 'r') as zip_ref:
             zip_ref.extractall(MASKS_PATH)
 
 
-    groundtruth_zips = glob(os.path.join(GROUNDTRUTH_PATH, '*.zip'))
-    for groundtruth_zip in groundtruth_zips:
-        with zipfile.ZipFile(groundtruth_zip, 'r') as zip_ref:
-            zip_ref.extractall(GROUNDTRUTH_PATH)
+    manual_anottations_zips = glob(os.path.join(MANUAL_ANNOTATIONS_PATH, '*.zip'))
+    for manual_anottation_zips in manual_anottations_zips:
+        with zipfile.ZipFile(manual_anottation_zips, 'r') as zip_ref:
+            zip_ref.extractall(MANUAL_ANNOTATIONS_PATH)
 
 

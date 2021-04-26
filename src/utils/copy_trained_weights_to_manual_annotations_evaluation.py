@@ -2,7 +2,7 @@ import os
 import shutil
 
 TRAINING_DIR = '../train/'
-GROUNDTRUTH_CNN_EVALUATION_DIR = '../manual_annotations/cnn_compare/'
+MANUAL_ANNOTATIONS_CNN_EVALUATION_DIR = '../manual_annotations/cnn_compare/'
 
 WEIGHTS_FOLDER_NAME = 'weights'
 
@@ -19,7 +19,7 @@ for algorithm in algorithms:
             file_algorithm = 'Kumar-Roy'
 
         origin_weights = os.path.join(TRAINING_DIR, algorithm, architecture, 'train_output', 'model_unet_{}_final_weights.h5'.format( file_algorithm ))
-        output_dir = os.path.join(GROUNDTRUTH_CNN_EVALUATION_DIR, algorithm, architecture, WEIGHTS_FOLDER_NAME)
+        output_dir = os.path.join(MANUAL_ANNOTATIONS_CNN_EVALUATION_DIR, algorithm, architecture, WEIGHTS_FOLDER_NAME)
         
         print('Copy {} to {}'.format(origin_weights, output_dir))
 
