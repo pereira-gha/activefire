@@ -9,8 +9,8 @@ import os
 import sys
 import rasterio
 
-MANUAL_ANNOTATION_PATH = '../../dataset/groundtruth/patches/manual_annotations/'
-MASKS_PATH = '../../dataset/groundtruth/patches/masks/'
+MANUAL_ANNOTATION_PATH = '../../dataset/manual_annotations/patches/manual_annotations_patches'
+MASKS_PATH = '../../dataset/manual_annotations/patches/masks_patches'
 
 # Para facilitar, se for teste com um diretório que não segue o padrão dos nomes das máscaras: *(Kumar-Roy, Murphy, Schroeder)*.tif
 # Marque a flag como True. Com isso o diretório com as imagens será retornado em um dataframe, se False serão os dataframes serão separados com base no nome 
