@@ -27,6 +27,7 @@ You can download it right through [Google Drive](https://drive.google.com/drive/
 ```
 python download_dataset.py
 ```
+**Atention:** Due to the dataset size you may face a error message with the text: "Too many users have viewed or downloaded this file recently", unfortunatly it's seems to be an [error without any fix](https://github.com/wkentaro/gdown/issues/26), you can try to wait or to download the files manually.
 
 After you downloaded the desired regions you can uncompress it running:
 
