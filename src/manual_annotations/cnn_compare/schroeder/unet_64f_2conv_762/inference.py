@@ -11,8 +11,8 @@ from sklearn.metrics import f1_score
 from tqdm import tqdm
 
 
-MANUAL_ANNOTATION_PATH = '../../../../../dataset/manual_annotations/patches/annotations'
-IMAGES_PATH = '../../../../../dataset/manual_annotations/patches/images'
+MANUAL_ANNOTATION_PATH = '../../../../../dataset/manual_annotations/patches/manual_annotations_patches'
+IMAGES_PATH = '../../../../../dataset/manual_annotations/patches/landsat_patches'
 
 CUDA_DEVICE = 0
 
