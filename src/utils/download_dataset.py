@@ -12,6 +12,9 @@ Remember that the files will need more space when you uncomprees it, so watch ou
 import gdown
 import os
 
+# Set to false if you want to download the subset of samples
+DOWNLOAD_FULL_DATASET = True
+
 OUTPUT_DIR = '../../dataset/compresed/'
 
 BASE_URL = 'https://drive.google.com/uc?id={}'
@@ -30,6 +33,14 @@ REGIONS = {
     'Asia5': '1Y1UysFrZ8AiugKvDpWI3nHcjo7-CQ4Dp', # Abouut 34GB - https://drive.google.com/file/d/1Y1UysFrZ8AiugKvDpWI3nHcjo7-CQ4Dp/view?usp=sharing
 }
 
+SUBSET_SAMPLES = {
+    'samples' : '1gwQdhXrxCybcO16vem09DfW5fPadAA_p',
+}
+
+# Place to download the samples
+# Is different from the Full Dataset to avoid mistakes running the others scripts
+OUTPUT_SAMPLES = '../../dataset'
+
 def download_file(file_id, output):
     url = BASE_URL.format(file_id)
     print('Downloading: {}'.format(url))
@@ -41,9 +52,16 @@ if __name__ == '__main__':
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for region in REGIONS:
-        
-        zip_file_name = '{}.zip'.format(region)
-        output = os.path.join(OUTPUT_DIR, zip_file_name)
+    if DOWNLOAD_FULL_DATASET:
+        for region in REGIONS:
+            
+            zip_file_name = '{}.zip'.format(region)
+            output = os.path.join(OUTPUT_DIR, zip_file_name)
 
-        download_file(REGIONS[region], output)
+            download_file(REGIONS[region], output)
+
+    else:
+        zip_file_name = 'samples.zip'
+        output = os.path.join(OUTPUT_SAMPLES, zip_file_name)
+
+        download_file(SUBSET_SAMPLES['samples'], output)
