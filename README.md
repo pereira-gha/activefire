@@ -127,37 +127,37 @@ By default the data will be divided in a proportion of 40% for training, 50% for
 
 # Training
 
-If you want to train the model from scratch you need to navigate to the desired folder (e.g `src/train/kumar-roy/unet_16f_2conv_762`) and simply run:
+If you wish to train a model from scratch you need to navigate to the desired folder (e.g `src/train/kumar-roy/unet_16f_2conv_762`) and simply run:
 
 ```
 python train.py
 ```
 
-This will execute all steps needed to train a new model. You may change the constant `CUDA_DEVICE` to the number of the GPU you want to use. This code expectes that the samples are in a sibling folder of `src` named `dataset`, the images must be in the `dataset/images/patches` and the masks in `dataset/masks/patches`. The artifical masks use a different folder: `dataset/masks/intersection` for intersection masks and `dataset/masks/voting` for voting masks. If you are using other directory to hold your samples you may change the `IMAGES_PATH` and `MASKS_PATH` constants.
+This will execute all the steps needed to train a new model. You may change the constant `CUDA_DEVICE` to the number of the GPU you want to use. This code expects that the samples are in a sibling folder of `src` named `dataset`, the images must be in `dataset/images/patches` and the masks in `dataset/masks/patches`. The combined masks use a different folder: `dataset/masks/intersection` for intersection masks and `dataset/masks/voting` for voting masks. If you are using other directory to hold your samples you may change the `IMAGES_PATH` and `MASKS_PATH` constants.
 
-The output produced by the training script will be placed at `train_output` folder inside the model folder. This repository already include trained weights inside this folder for the U-Net-Light (3c) models, so if you retrain the model **this weights will be overwrited**.
+The output produced by the training script will be placed at the `train_output` folder inside the model folder. This repository already includes trained weights inside this folder for the U-Net-Light (3c) models, so if you retrain the model **these weights will be overwritten**.
 
 Besides the final weights, this script will save checkpoints every 5 epochs, if you need to resume from a checkpoint you just need to set the constant `INITIAL_EPOCH` with the epoch corresponding to the checkpoint.
 
 # Testing the trained models
 
-**Attention:** this process will fit all data in your RAM, so this can freeze your machine. If you are running this code in a low memory environment you can reduce the rows in the `images_test.csv` and `masks_test.csv` before these steps.
+**Attention:** this process will load all the data in RAM, so it can freeze your machine. If you are running this code in a low memory environment you can cut some rows from `images_test.csv` and `masks_test.csv` before these steps.
 
-The testing phase are divided in two main steps. The first one is to apply the trained model over the `images_test.csv` images and save the output as a txt file, where 0 represents background and 1 represents fire. The masks in the `masks_test.csv` will also be converted in a txt file. These files will be written in the `log` folder inside the model folder. The output prediction produced by the CNN will be saved with the name `det_<image-name>.txt` while the corresponding mask will be saved with the name `grd_<mask-name>.txt`. To execute this process run:
+The testing phase is divided in two main steps. The first one is to pass the `images_test.csv` images through the trained model and save the output as a txt file, where 0 represents background and 1 represents fire. The masks in `masks_test.csv` will also be converted to a txt file. These files will be written in the `log` folder inside the model folder. The output prediction produced by the CNN will be saved as `det_<image-name>.txt` while the corresponding mask will be saved as `grd_<mask-name>.txt`. To execute this process run:
 
 ```
 python inference.py
 ```
 
-You may change the constant `CUDA_DEVICE` to the number of the GPU you want to use. If your samples are placed in other diretory than the default you need to change the constant `IMAGES_PATH` and `MASKS_PATH`. The output produced by the CNN are converted to interger through a thresholding process, the default threshold are `0.25` you can change this value in the `TH_FIRE` constant.
+You may change the constant `CUDA_DEVICE` to the number of the GPU you want to use. If your samples are placed in a diretory other than the default you need to change the constant `IMAGES_PATH` and `MASKS_PATH`. The outputs produced by the CNN are converted to interger through a thresholding process, the default threshold is `0.25`. You can change this value in the `TH_FIRE` constant.
 
-After this processes you can start the second step to evaluate your trained model. You can simply run:
+After this processes you can start the second step to evaluate your trained model, running:
 
 ```
 python evaluate_v1.py
 ```
 
-This will show the results to your model.
+This will show the results from your model.
 
 If you face the message `[ERROR] Dont match X - Y` this means that a mask or a prediction is missing. Make sure all predictions produced by your model have a corresponding mask.
 
