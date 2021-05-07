@@ -164,16 +164,16 @@ If you face the message `[ERROR] Dont match X - Y` this means that a mask or a p
 
 # Compare against the Manual Annotations
 
-The code inside the folder `src/manual_annotations` gives you a way to compare the masks of the algorithms and the output produced by CNN against the manual annotations. To compare the algorithms (Schroeder, Murphy, Kumar-Roy, Intersection and Voting) against the manual annotations run the following two commands:
+The code inside the `src/manual_annotations` folder gives you a way to compare the masks of the algorithms and the output produced by a CNN against the manual annotations. To compare the algorithms (Schroeder, Murphy, Kumar-Roy, Intersection and Voting) against the manual annotations run the following two commands:
 
 ```
 python inference.py
 python evaluate_v1.py
 ```
 
-The first script will convert the masks and the manual annotations to txt files, inside the `src/manual_annotations/log` folder. The script name `inference.py` was kept for consistency, but no CNN is used in the process. The second script will apply the metrics over the txt files, this will fit all files in your machine's memory. After it ends, you will see the results on the screen.
+The first script will convert the masks and manual annotations to txt files, inside the `src/manual_annotations/log` folder. The `inference.py` script was kept for consistency, but no CNN is used in the process. The second script will apply the metrics over the txt files, this will fit all the files in your machine's memory. After it ends, the results will be displayed.
 
-In the same way, you may test the output produced by the CNN against the groundtruth. The code inside `src/manual_annotatios/cnn_compare` gives you a way to compare each model. It is important to copy the trained weights inside a folder named `weights` inside each model folder. Alternatively you can change the constant `WEIGHTS_FILE` with the desired weights. If you downloaded the pre-trained weights and unzipped them as described in the previous sections the weights are already in the correct directories.
+In the same way, you may test the output produced by a CNN against the groundtruth. The code inside `src/manual_annotatios/cnn_compare` gives you a way to compare each model. It is important to copy the trained weights to a folder named `weights` inside each model folder. Alternatively you can change the constant `WEIGHTS_FILE` with the desired weights. If you downloaded the pre-trained weights and unzipped them as described in the previous sections the weights are already in the correct directories.
 
 You can compare each model individually, for this access the desired model folder and run:
 
@@ -182,50 +182,49 @@ python inference.py
 python evaluate_v1.py
 ```
 
-Or you can run all tests running the `src/groundtruth/cnn_compare/run_all.sh` script. This will create a `txt` file inside each model folder with the results.
-
+Or you can run all the tests running the `src/groundtruth/cnn_compare/run_all.sh` script. This will create a `txt` file inside each model folder with the results.
 
 # Show the CNN output
 
-You can also generate images from trained models. For this purpose you can access `src/utils/cnn` folder and you will find the `generate_inference.py` script. This script will apply the selected model over an image patch and generate a PNG image with the prediction. You need to define the constant `IMAGE_NAME` with the desired image, and if set the constant `IMAGE_PATH` with the path where this image can be found. It is important to define the constant `MASK_ALGORITHM` with the approach you want to use, the `N_CHANNELS` and `N_FILTERS` with the number of channels used and number of filters of the model. Make sure that the trained weights defined in `WEIGHTS_FILE` is consistent with the parameters defined. After that you can run:
+You can also generate images from trained models. For this purpose, access the `src/utils/cnn` folder and find the `generate_inference.py` script. This script will pass the image patch through the selected model and generate a PNG image with the prediction. You need to define the `IMAGE_NAME` constant with the desired image, and set the `IMAGE_PATH` constant with the path where this image can be found. It is important to define `MASK_ALGORITHM` with the approach you want to use, `N_CHANNELS` and `N_FILTERS` with the number of channels used and number of filters of the model. Make sure that the trained weights defined in `WEIGHTS_FILE` is consistent with the parameters defined. After that you can run:
 
 ```
 python generate_inference.py
 ```
 
-You may want to compare the output produced by the different architectures and also the masks. The script `generate_figures.py` applies the different networks trained on all patches from the image defined in the constant `IMAGE_NAME`. The output folder will have the output produced from the CNNs, the masks available and an image path with the combination of channels 7, 6 and 2 in a PNG format. This script can be run using:
+You may want to compare the output produced by the different architectures and also the masks. The script `generate_figures.py` applies the different networks trained on all patches from the image defined in the `IMAGE_NAME` constant. The output folder will have the outputs produced by the CNNs, the available masks and an image path with the combination of channels 7, 6 and 2 in a PNG format. This script can be run using:
 ```
 python generate_figures.py
 ```
 
 # Useful stuff
 
-In the `src/utils` you will find some scripts that may help you understant the images and masks you are working with. For example, you may want to know how many fire pixels are in a mask, for this you can use the `count_fire_pixels.py` script. You just define the `IMAGE_NAME` with the desired mask name and run:
+In `src/utils` you will find some scripts that may help you understand the images and masks you are working with. For example, you may want to know how many fire pixels are in a mask, for this you can use the `count_fire_pixels.py` script. You just define the `IMAGE_NAME` with the desired mask name and run:
 
 ```
 python count_fire_pixels.py
 ```
 
-Alternatively you can define a partial name in the constant `IMAGE_NAME` and the `PATCHES_PATTERN` with a pattern to be found and count fire pixels from many patches.
+Alternatively you can define a partial name in `IMAGE_NAME` and a pattern to be found in `PATCHES_PATTERN`, and count fire pixels from many patches.
 
-You may need to find an image with at least some minimal amount of fire pixels, this repository has the script `masks_with_at_least_n_fire_pixels.py` that will print on the screen the image path of the masks in the `MASK_PATH` directory that has more fire pixels than `NUM_PIXELS` defined in the script. After defining the path and the amount of pixels you are intered you can run:
+You may need to find an image with at least some minimal amount of fire pixels, the script `masks_with_at_least_n_fire_pixels.py` prints on the screen the image path of the masks in the `MASK_PATH` directory that has more fire pixels than `NUM_PIXELS` defined in the script. After defining the path and the amount of pixels you can run:
 ```
 python masks_with_at_least_n_fire_pixels.py
 ```
 
-The masks has the value 1 where fire occurs and 0 otherwise, because of that the masks will not display "white" and "black" if oppened. To help you see the mask you can use the script `transform_mask.py`, this script will convert the image to a PNG with white where fire occurs with a black background. You just need to define the mask you want to convert in the constant `MASK_PATH` and run:
+The masks have the value 1 where fire occurs and 0 otherwise, because of that the masks will not display "white" and "black" if open in an image viewing program. To help you see the mask you can use the script `transform_mask.py`, this script will convert the image to a PNG with white and black pixels. You just need to define the mask you want to convert in the `MASK_PATH` constant and run:
 
 ```
 python transform_mask.py
 ```
 
-The images available in the dataset are also difficult to view, as they are images with 10 channels. You can convert them into a visible format, with the combination of bands 7, 6 and 2, using the `convert_patch_to_3channels_image.py` script. You just need to set the path to the desired image in the constant `IMAGE` and run:
+The images available in the dataset are also difficult to view, as they are 10-channel images. You can convert them into a visible format, with the combination of bands 7, 6 and 2, using the `convert_patch_to_3channels_image.py` script. You just need to set the path to the desired image in the `IMAGE` constant and run:
 
 ```
 python convert_patch_to_3channels_image.py
 ```
 
-If you trained the models from scratch and want to use those weights to compare against the manual annotations you cam use the script `copy_trained_weights_to_manual_annotations_evaluation.py` to copy the trained weights to the directories used to evaluate the models against the manual annotations:
+If you trained the models from scratch and want to use those weights to compare against the manual annotations, use the `copy_trained_weights_to_manual_annotations_evaluation.py` script to copy the trained weights to the directories used to evaluate the models against the manual annotations:
 
 ```
 python copy_trained_weights_to_manual_annotations_evaluation.py
