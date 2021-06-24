@@ -238,15 +238,20 @@ python purge_logs.py
 
 # Citation
 
-If you find our work useful for your research, please [cite our paper](https://arxiv.org/abs/2101.03409):
+If you find our work useful for your research, please [cite our paper](https://authors.elsevier.com/c/1dI81_L0-WAY70):
 
 ```
-@misc{pereira2021active,
-      title={Active Fire Detection in Landsat-8 Imagery: a Large-Scale Dataset and a Deep-Learning Study}, 
-      author={Gabriel Henrique de Almeida Pereira and André Minoro Fusioka and Bogdan Tomoyuki Nassu and Rodrigo Minetto},
-      year={2021},
-      eprint={2101.03409},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DEALMEIDAPEREIRA2021171,
+title = {Active fire detection in Landsat-8 imagery: A large-scale dataset and a deep-learning study},
+journal = {ISPRS Journal of Photogrammetry and Remote Sensing},
+volume = {178},
+pages = {171-186},
+year = {2021},
+issn = {0924-2716},
+doi = {https://doi.org/10.1016/j.isprsjprs.2021.06.002},
+url = {https://www.sciencedirect.com/science/article/pii/S092427162100160X},
 }
 ```
+
+Or access the [preprinted version](https://arxiv.org/abs/2101.03409).
+
