@@ -250,6 +250,8 @@ year = {2021},
 issn = {0924-2716},
 doi = {https://doi.org/10.1016/j.isprsjprs.2021.06.002},
 url = {https://www.sciencedirect.com/science/article/pii/S092427162100160X},
+author = {Gabriel Henrique {de Almeida Pereira} and Andre Minoro Fusioka and Bogdan Tomoyuki Nassu and Rodrigo Minetto},
+keywords = {Active fire detection, Active fire segmentation, Active fire dataset, Convolutional neural network, Landsat-8 imagery},
 }
 ```
 
