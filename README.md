@@ -238,7 +238,7 @@ python purge_logs.py
 
 # Citation
 
-If you find our work useful for your research, please [cite our paper](https://authors.elsevier.com/c/1dI81_L0-WAY70):
+If you find our work useful for your research, please [cite our paper](https://www.sciencedirect.com/science/article/abs/pii/S092427162100160X):
 
 ```
 @article{DEALMEIDAPEREIRA2021171,
