@@ -5,7 +5,7 @@ import shutil
 import tempfile
 
 # Set to false if you are uncompressing the samples provided in the GitHub repository
-FULL_DATASET = True
+FULL_DATASET = False
 
 # This constans are used if you are unziping the *small* samples patches 
 SAMPLES_ZIP_PATH = '../../dataset/samples.zip'
@@ -105,18 +105,18 @@ else :
 
     with tempfile.TemporaryDirectory() as tmpdirname:
         with zipfile.ZipFile(SAMPLES_ZIP_PATH, 'r') as zip_ref:
-                zip_ref.extractall(tmpdirname)
+            zip_ref.extractall(tmpdirname)
 
-        image_zip = os.path.join(tmpdirname, 'samples', 'images', 'patches.zip')
+        image_zip = os.path.join(tmpdirname, 'dataset', 'images', 'patches.zip')
         with zipfile.ZipFile(image_zip, 'r') as zip_ref:
             zip_ref.extractall(IMAGES_PATH)
 
-        masks_zips = glob(os.path.join(tmpdirname, 'samples', 'masks', '*.zip'))
+        masks_zips = glob(os.path.join(tmpdirname, 'dataset', 'masks', '*.zip'))
         for mask_zip in masks_zips:
             with zipfile.ZipFile(mask_zip, 'r') as zip_ref:
                 zip_ref.extractall(MASKS_PATH)
 
-        manual_anottations_zips = glob(os.path.join(tmpdirname, 'samples', 'manual_annotations', '*.zip'))
+        manual_anottations_zips = glob(os.path.join(tmpdirname, 'dataset', 'manual_annotations', '*.zip'))
         for manual_anottation_zips in manual_anottations_zips:
             with zipfile.ZipFile(manual_anottation_zips, 'r') as zip_ref:
                 zip_ref.extractall(MANUAL_ANNOTATIONS_PATH)
