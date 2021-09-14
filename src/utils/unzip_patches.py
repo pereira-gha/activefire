@@ -106,17 +106,24 @@ else :
     with tempfile.TemporaryDirectory() as tmpdirname:
         with zipfile.ZipFile(SAMPLES_ZIP_PATH, 'r') as zip_ref:
             zip_ref.extractall(tmpdirname)
-
-        image_zip = os.path.join(tmpdirname, 'dataset', 'images', 'patches.zip')
+            
+        image_zip = os.path.join(tmpdirname, 'samples', 'images', 'patches.zip')
         with zipfile.ZipFile(image_zip, 'r') as zip_ref:
             zip_ref.extractall(IMAGES_PATH)
 
-        masks_zips = glob(os.path.join(tmpdirname, 'dataset', 'masks', '*.zip'))
+        masks_zips = glob(os.path.join(tmpdirname, 'samples', 'masks', '*.zip'))
         for mask_zip in masks_zips:
             with zipfile.ZipFile(mask_zip, 'r') as zip_ref:
                 zip_ref.extractall(MASKS_PATH)
 
-        manual_anottations_zips = glob(os.path.join(tmpdirname, 'dataset', 'manual_annotations', '*.zip'))
+        # Workaround to avoid the old name notation in the images
+        # Replace the the "GOLI_v1" with "Kumar-Roy" notation
+        masks = glob(os.path.join(MASKS_PATH, 'patches', '*_GOLI_v2_*.tif'))
+        for mask in masks:
+            mask_name = os.path.basename(mask)
+            os.rename(os.path.join(MASKS_PATH, 'patches', mask_name), os.path.join(MASKS_PATH, 'patches', mask_name.replace('GOLI_v2', 'Kumar-Roy'))) 
+
+        manual_anottations_zips = glob(os.path.join(tmpdirname, 'samples', 'manual_annotations', '*.zip'))
         for manual_anottation_zips in manual_anottations_zips:
             with zipfile.ZipFile(manual_anottation_zips, 'r') as zip_ref:
                 zip_ref.extractall(MANUAL_ANNOTATIONS_PATH)
