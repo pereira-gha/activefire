@@ -15,7 +15,7 @@ import os
 # Set to false if you want to download the subset of samples
 DOWNLOAD_FULL_DATASET = True
 
-OUTPUT_DIR = '../../dataset/compresed/'
+OUTPUT_DIR = '../../dataset/compressed/'
 
 BASE_URL = 'https://drive.google.com/uc?id={}'
 
