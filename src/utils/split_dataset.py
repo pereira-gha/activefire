@@ -29,10 +29,10 @@ from keras.preprocessing.image import ImageDataGenerator
 # Schroeder, Murphy or Kumar-Roy
 MASK_ALGORITHM = 'Kumar-Roy'
 
-IMAGES_PATH = '../../dataset/images'
-MASKS_PATH = '../../dataset/masks'
-OUTPUT_FOLDER = './dataset'
-IMAGES_DATAFRAME = os.path.join('/images_masks.csv')
+IMAGES_PATH = '../../dataset/images/patches/'
+MASKS_PATH = '../../dataset/masks/patches/'
+OUTPUT_FOLDER = '../../dataset/'
+IMAGES_DATAFRAME = os.path.join(OUTPUT_FOLDER, 'images_masks.csv')
 
 RANDOM_STATE = 42
 
@@ -40,7 +40,7 @@ TRAIN_RATIO = 0.4
 VALIDATION_RATIO = 0.1
 TEST_RATIO = 0.5
 
-if os.path.exists(OUTPUT_FOLDER):
+if not os.path.exists(OUTPUT_FOLDER):
     os.makedirs(OUTPUT_FOLDER)
 
 masks = glob.glob(os.path.join(MASKS_PATH, '*{}*.tif'.format(MASK_ALGORITHM)))
