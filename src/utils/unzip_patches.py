@@ -5,7 +5,7 @@ import shutil
 import tempfile
 
 # Set to false if you are uncompressing the samples provided in the GitHub repository
-FULL_DATASET = False
+FULL_DATASET = True
 
 # This constans are used if you are unziping the *small* samples patches 
 SAMPLES_ZIP_PATH = '../../dataset/samples.zip'
