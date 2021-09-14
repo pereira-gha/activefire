@@ -169,3 +169,5 @@ dataset/masks/voting/*.tif
 dataset/groundtruth/manual_annotation/*.tif
 dataset/groundtruth/masks/*.tif
 weights/*.zip
+dataset/compressed/*
+dataset/**/*.tif
