@@ -43,7 +43,7 @@ for ind,image_name in enumerate(df.productId.to_list()):
     
     log = OUT_DIR + image_name + '.log'  
     if not os.path.exists(log):
-        try:               
+        #try:               
             path  = image_name[10:13]
             row = image_name[13:16]            
             
@@ -97,12 +97,12 @@ for ind,image_name in enumerate(df.productId.to_list()):
             end_time = time.time ()    
             print ('Elapsed: ' + str (round ((end_time-start_time)/60, 2)) + ' min.\n')
             
-        except Exception as e:
+"""         except Exception as e:
             f = open(log, 'w+')                
             f.write(str(e))
             f.close()
             end_time = time.time ()
-            print('Erro. Elapsed: ' + str (round ((end_time-start_time)/60, 2)) + ' min.\n')
+            print('Erro. Elapsed: ' + str (round ((end_time-start_time)/60, 2)) + ' min.\n') """
             
     
 
