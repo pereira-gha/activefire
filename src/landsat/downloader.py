@@ -51,6 +51,7 @@ for ind,image_name in enumerate(df.productId.to_list()):
             outnameBQA = OUT_DIR + image_name + '_' + 'BQA' + ext 
             if not os.path.exists(outnameBQA):
                 link = AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'BQA' + ext
+                print(link)
                 with rasterio.open(link) as src:
                     profile = src.profile.copy()
                     BQA = src.read(1)
