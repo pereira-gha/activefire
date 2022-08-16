@@ -16,7 +16,7 @@ import rasterio
 #%%
 #===============================================================================
 
-AWS_L8 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
+AWS_L8 = 'http://landsat-pds.s3.amazonaws.com/c2/L8/'
 
 MTL_EXTENSION = '_MTL.txt'
 ext = '.TIF'
