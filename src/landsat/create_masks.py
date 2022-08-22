@@ -21,7 +21,8 @@ import rasterio
 # CONSTANTS
 #===============================================================================
 
-AWS_18 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
+#AWS_18 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
+GC_L8 = 'https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/'
 
 MTL_EXTENSION = '_MTL.txt'
 
@@ -614,7 +615,7 @@ for ind, file in enumerate(files):
                     
             
 #------ MTL -----------------------------------------------
-        aws_path = AWS_18 + image_name [10:13] + '/' + image_name [13:16] + '/' + image_name + '/' + image_name + MTL_EXTENSION
+        aws_path = GC_L8 + image_name [10:13] + '/' + image_name [13:16] + '/' + image_name + '/' + image_name + MTL_EXTENSION
         MTL = requests.get(aws_path).text
         Mrad, Arad, Mref, Aref, K1, K2, SE, L8ID, FDATE, DATEAC, SceneTIME, CC, MP, DT, EL, ZONE = getMTLParameters (MTL)
 
