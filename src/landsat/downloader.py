@@ -16,7 +16,8 @@ import rasterio
 #%%
 #===============================================================================
 
-AWS_L8 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
+#AWS_L8 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
+GC_L8 = 'https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/'
 
 MTL_EXTENSION = '_MTL.txt'
 ext = '.TIF'
@@ -50,8 +51,7 @@ for ind,image_name in enumerate(df.productId.to_list()):
             ########################### BQA ################################
             outnameBQA = OUT_DIR + image_name + '_' + 'BQA' + ext 
             if not os.path.exists(outnameBQA):
-                link = AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'BQA' + ext
-                print(link)
+                link = GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'BQA' + ext
                 with rasterio.open(link) as src:
                     profile = src.profile.copy()
                     BQA = src.read(1)
@@ -63,16 +63,16 @@ for ind,image_name in enumerate(df.productId.to_list()):
             ########################### BANDS ################################
             outname = OUT_DIR + image_name + ext   # checar se já foi feito download
             if not os.path.exists(outname):
-                link_bands = [AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B1' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B2' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B3' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B4' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B5' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B6' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B7' + ext,
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B9' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B10' + ext, 
-                            AWS_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B11' + ext]
+                link_bands = [GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B1' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B2' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B3' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B4' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B5' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B6' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B7' + ext,
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B9' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B10' + ext, 
+                            GC_L8 + path + '/' + row + '/' + image_name + '/' + image_name + '_' + 'B11' + ext]
             
                 bands = []
                 for link in link_bands:
