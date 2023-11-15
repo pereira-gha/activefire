@@ -78,6 +78,9 @@ After downloading the zip files with the patches, you can unzip them with the `s
 ```shell
 python unzip_manual_annotations.py.py
 ```
+
+If you want to use the entire annotated images instead of the patches you can access this [Google Drive](https://drive.google.com/drive/folders/1Pmf2mXLhN65_z6YPOi16GEvMGnNTsghD) directory. Or you can change the script `download_manual_annotations.py` and set the constant `DOWNLOAD_SCENES = True`. 
+
 ## Models
 
 Each folder inside the `src/train` directory contains the CNNs trained with different active fire detection algorithms. The codes inside these folders are almost the same, the only differences are in the constants that configure the CNNs (number of filters, number of channels, target masks, etc).
