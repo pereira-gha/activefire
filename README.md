@@ -246,6 +246,22 @@ In order to save space, only fire masks are available. In our code, the masks wi
 python generate_nonfire_masks.py
 ```
 
+# Environment preparation
+
+The scripts in this repository were done using Tensorflow (GPU) version 1.13, using Keras 2.2 version. Since there are some Nvidia-drivers/CUDA/TensorFlow specific installation details we don't provide any enviroment preparation file, but the main libriries used are:
+```
+tensorflow-gpu
+keras
+numpy
+cv2
+scikit-learn
+pandas
+geopandas
+rasterio
+```
+If you want to use TensorFlow 2.X you can follow some hints in the [tensorflow-2.md](tensorflow-2.md) file.
+
+
 # Citation
 
 If you find our work useful for your research, please [cite our paper](https://www.sciencedirect.com/science/article/abs/pii/S092427162100160X):
