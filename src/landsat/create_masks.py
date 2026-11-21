@@ -444,7 +444,7 @@ def Meq3 (bands, unamb, sat):
     #neighborhood = np.logical_xor (neighborhood, unamb)
 
     # Avoid divisions by 0!
-    p5 = np.where (bands[5] > 0, np.finfo (float).eps, bands[5])
+    p5 = np.where (bands[5] == 0, np.finfo (float).eps, bands[5])
     return (np.logical_and (neighborhood, np.logical_or (np.logical_and (bands[6]/p5 >= 2.0, bands[6]>=0.5), sat)))
 
 
