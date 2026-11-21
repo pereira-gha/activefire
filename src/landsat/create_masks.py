@@ -1,19 +1,33 @@
 # -*- coding: utf-8 -*-
 #===============================================================================
+# Creates the active fire masks (Schroeder et al., 2016; Kumar and Roy, 2018;
+# Murphy et al., 2016) from Landsat-8/9 Level-1 scenes.
+#
+#   python create_masks.py --collection c2 [--in_dir DIR] [--out_dir DIR]
+#   python create_masks.py --collection c1 [--in_dir DIR] [--out_dir DIR]
+#
+# c1: Collection 1, the input used to create the published dataset (stacked
+#     <scene>.TIF + <scene>_BQA.TIF, MTL from Google Cloud). USGS removed the
+#     Collection 1 products in December 2022.
+# c2: Collection 2, one folder per scene as delivered by USGS (<scene>_B1.TIF
+#     ... _B7.TIF, <scene>_MTL.txt and <scene>_QA_RADSAT.TIF).
+# The readers are in inputs.py; the fire detection functions below are the
+# same for both collections.
+#===============================================================================
 
 import os
 import math
 import glob
+import argparse
 
 import numpy as np
 # import pandas as pd
 
-import requests
-
 import cv2
-import gdal
-# from osgeo import gdal
+from osgeo import gdal
 import rasterio
+
+from inputs import read_c1, read_c2, list_c2_scenes
 
 
 
@@ -21,24 +35,13 @@ import rasterio
 # CONSTANTS
 #===============================================================================
 
-#AWS_18 = 'http://landsat-pds.s3.amazonaws.com/c1/L8/'
-GC_L8 = 'https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/'
-
-MTL_EXTENSION = '_MTL.txt'
-
 # BQA_PATH = '/home/gabriel/BQA/'
 #IN_DIR = r'/media/hd2/Landsat8/'
 #OUT_DIR = r'/media/hd2/Landsat8/ALL_MASKS/'
 
-IN_DIR = r'../../dataset/images/tif_images/'
+IN_DIR = r'../../dataset/images/tif_images/'     # Collection 1 (default of --in_dir with --collection c1)
+IN_DIR_C2 = r'../../dataset/images/c2/'          # Collection 2 (default of --in_dir with --collection c2)
 OUT_DIR = r'../../dataset/masks/'
-
-
-if not os.path.exists(OUT_DIR): 
-    os.makedirs(OUT_DIR)             
-
-if not os.path.exists(OUT_DIR+'patches/'): 
-    os.makedirs(OUT_DIR+'patches/')             
 
 
 # IN_DIR = r'C:\Users\aloga\Desktop\Mestrado\Downloads\202008\\'
@@ -50,60 +53,6 @@ if not os.path.exists(OUT_DIR+'patches/'):
 #===============================================================================
 # FUNCTIONS
 #===============================================================================
-
-def getMTLParameters (MTL):
-    '''Parses the given metadata (MTL) text, and returns several independent
-parameters.'''
-
-    Mref = []
-    Aref = []
-    Mrad = []
-    Arad = []
-    K1 = []
-    K2 = []
-
-    MTL = MTL.splitlines()
-
-    for ln in MTL:
-
-        if 'RADIANCE_MULT_BAND_' in ln:
-            Mrad.append(float(ln.split(' = ')[1]))
-        if 'RADIANCE_ADD_BAND_' in ln:
-            Arad.append(float(ln.split(' = ')[1]))
-        if 'REFLECTANCE_MULT_BAND_' in ln:
-            Mref.append(float(ln.split(' = ')[1]))
-        if 'REFLECTANCE_ADD_BAND_' in ln:
-            Aref.append(float(ln.split(' = ')[1]))
-        if 'K1_CONSTANT_BAND_' in ln:
-            K1.append(float(ln.split(' = ')[1]))
-        if 'K2_CONSTANT_BAND_' in ln:
-            K2.append(float(ln.split(' = ')[1]))
-
-        if 'SUN_ELEVATION' in ln:
-            SE = float(ln.split(' = ')[1])
-
-        if 'LANDSAT_SCENE_ID' in ln:
-            L8ID = (ln.split(' = ')[1])
-        if 'FILE_DATE' in ln:
-            FDATE = str(ln.split(' = ')[1])
-        if 'DATE_ACQUIRED' in ln:
-            DATEAC = str(ln.split(' = ')[1])
-        if 'SCENE_CENTER_TIME' in ln:
-            SceneTIME = str(ln.split(' = ')[1])
-        if 'CLOUD_COVER' in ln:
-            CC = float(ln.split(' = ')[1])
-        if 'MAP_PROJECTION' in ln:
-            MP = str(ln.split(' = ')[1])
-        if 'DATUM' in ln:
-            DT = str(ln.split(' = ')[1])
-        if 'ELLIPSOID' in ln:
-            EL = str(ln.split(' = ')[1])
-        if 'UTM_ZONE' in ln:
-            ZONE = int(ln.split(' = ')[1])
-
-    return Mrad, Arad, Mref, Aref, K1, K2, SE, L8ID, FDATE, DATEAC, SceneTIME, CC, MP, DT, EL, ZONE
-
-
 
 #-------------------------------------------------------------------------------
 def get_bounds(width,height,transform):
@@ -134,36 +83,6 @@ def get_extent(dataset):
             "minY": str(miny), "maxY": str(maxy),
             "cols": str(cols), "rows": str(rows)}
 
-
-
-
-#-------------------------------------------------------------------------------
-def getReflectance (band, add_band, mult_band, sun_elevation):
-    '''A tiny function, used just to compute the reflectances, with correction
-for solar angle (given in degrees).'''
-
-    p = ((band * mult_band) + add_band) # TOA planetary reflectance, without correction for solar angle
-    corrected = p / math.sin (math.radians (sun_elevation)) # TOA planetary reflectance, with correction for solar angle
-
-    return p, corrected
-
-
-
-#-------------------------------------------------------------------------------
-def get_saturation(BQA):
-    vals = [2724,2756,2804,2980,3012,3748,3780,6820,6852,6900,7076,7108,7844,7876,
-            2728,2760,2808,2984,3016,3752,3784,6824,6856,6904,7080,7112,7848,7880,
-            2732,2764,2812,2988,3020,3756,3788,6828,6860,6908,7084,7116,7852,7884]
-    
-    sat = np.zeros((BQA.shape), dtype=bool)
-
-    for val in vals:
-        sat = sat | (BQA==val)
-        
-    return sat.astype(np.int)
-
-  
-    
 
 
 
@@ -482,7 +401,7 @@ and returns a binary fire mask.'''
         potential_fires = Geq8and9 (bands, valid, unamb_fires, potential_fires, water)
 
     final_mask = np.logical_and (np.logical_or (unamb_fires, potential_fires), np.logical_not (water))
-    return (final_mask.astype (np.int))
+    return (final_mask.astype (int))
 
 
 
@@ -500,7 +419,7 @@ and a binary mask indicating saturated pixels, and returns a binary fire mask.''
     else:
         final_mask = unamb_fires
 
-    return (final_mask.astype (np.int))
+    return (final_mask.astype (int))
 
 
 #-------------------------------------------------------------------------------
@@ -527,47 +446,28 @@ def getFireMaskSchroeder (bands):
         potential_fires = Seq4and5 (bands, r75, unamb_fires, potential_fires, water)
 
     final_mask = np.logical_and (np.logical_or (unamb_fires, potential_fires), np.logical_not (water))
-    return (final_mask.astype (np.int))
+    return (final_mask.astype (int))
 
 
 
 #-------------------------------------------------------------------------------
-def processImage (in_dir, out_dir, image_name, Aref, Mref, SE, sat):
-    '''Reads a .tif image in the input directory, obtains metadata from AWS and
-reflectance values for each band, performs fire detection, and saves the results
-to other files in the output directory.
+def processImage (out_dir, image_name, profile, reflectance, corrected, sat):
+    '''Performs fire detection on the reflectance bands returned by one of the
+readers in inputs.py (read_c1 or read_c2), and saves the results to other files
+in the output directory.
 
-Parameters: in_dir: input directory.
-            out_dir: output directory.
+Parameters: out_dir: output directory.
             image_name: image name (without extension).
+            profile: rasterio profile of the input image.
+            reflectance: TOA reflectance without correction for solar angle
+                (list indexed by band number, bands 1~7).
+            corrected: TOA reflectance with correction for solar angle.
+            sat: saturation mask (used by Murphy et al., 2016).
 
 Return value: none. Saves the output to a .tif file in the output directory,
-    with the same name as image_name, with 'Reference' [Schroeder, GOLI, or Murphy]
+    with the same name as image_name, with 'Reference' [Schroeder, Kumar-Roy, or Murphy]
     appended to the end, as well as a binary .png image with the same name,
     containing only the fire mask.'''
-
-    # Read data from the file. The bands are numbered 1~11, but this algoritm
-    # uses only bands 1~7. Bands 8~11 are set to None.
-    bands = []
-    
-    with rasterio.open (os.path.join (in_dir, image_name + '.TIF')) as src:
-        profile = src.profile.copy ()
-        for i in range (12):
-            if i < 1 or i > 7: # Keep bands 1 to 7.
-                bands.append (None)
-            else:
-                bands.append (src.read (i))
-
-
-
-    reflectance = np.copy(bands)
-    corrected = np.copy(bands)
-    
-    # Get corrected reflectances for bands 1~7.
-    for i in range (1,8):
-        reflectance [i], corrected [i] = getReflectance (bands [i], Aref [i-1], Mref [i-1], SE)
-    bands = None
-
 
     # Get the fire mask.
     fire_mask = getFireMaskSchroeder (reflectance)
@@ -594,38 +494,51 @@ Return value: none. Saves the output to a .tif file in the output directory,
 
 
 #===============================================================================
-# TEST SCRIPT
+# SCRIPT
 #===============================================================================
 
-files = glob.glob(IN_DIR + '*BQA.TIF')
-print('Files to process:', len(files))
-files.reverse()
+if __name__ == '__main__':
 
-for ind, file in enumerate(files):
-    try:
-        image_name = os.path.basename(file.replace('_BQA.TIF',''))
-        print(ind,'-',image_name)
-    
-#------ BQA - SATURATION BAND -----------------------------------------------            
-        with rasterio.open(file) as src:
-            profile = src.profile.copy()
-            BQA = src.read(1)
-                
-        sat = get_saturation(BQA)
-                    
-            
-#------ MTL -----------------------------------------------
-        aws_path = GC_L8 + image_name [10:13] + '/' + image_name [13:16] + '/' + image_name + '/' + image_name + MTL_EXTENSION
-        MTL = requests.get(aws_path).text
-        Mrad, Arad, Mref, Aref, K1, K2, SE, L8ID, FDATE, DATEAC, SceneTIME, CC, MP, DT, EL, ZONE = getMTLParameters (MTL)
+    parser = argparse.ArgumentParser (description='Creates the active fire masks from Landsat-8/9 Level-1 scenes.')
+    parser.add_argument ('--collection', choices=['c1', 'c2'], default='c2',
+                         help='c1: Collection 1 (input of the published dataset); c2: Collection 2 (default).')
+    parser.add_argument ('--in_dir', default=None,
+                         help='Input folder (default: %s for c1, %s for c2).' % (IN_DIR, IN_DIR_C2))
+    parser.add_argument ('--out_dir', default=OUT_DIR, help='Output folder (default: %(default)s).')
+    args = parser.parse_args ()
 
+    in_dir = args.in_dir or (IN_DIR if args.collection == 'c1' else IN_DIR_C2)
+    out_dir = os.path.join (args.out_dir, '')
 
-#------ Process -----------------------------------------------
-        if os.path.exists(os.path.join(OUT_DIR,image_name + '_Murphy.TIF')) or os.path.exists(os.path.join(OUT_DIR,image_name + '_GOLI.TIF')) or os.path.exists(os.path.join(OUT_DIR,image_name + '_Schroeder.TIF')):
-            print('    ja processado')
-        else:
-            processImage (IN_DIR, OUT_DIR, image_name, Aref, Mref, SE, sat)
+    if not os.path.exists(out_dir): 
+        os.makedirs(out_dir)             
 
-    except Exception as e:
-        print(e)
+    if not os.path.exists(out_dir+'patches/'): 
+        os.makedirs(out_dir+'patches/')             
 
+    # (scene folder, image name) for each scene.
+    if args.collection == 'c1':
+        files = glob.glob(os.path.join(in_dir, '*BQA.TIF'))
+        files.reverse()
+        scenes = [(in_dir, os.path.basename(f.replace('_BQA.TIF',''))) for f in files]
+    else:
+        scenes = list_c2_scenes(in_dir)
+    print('Files to process:', len(scenes))
+
+    for ind, (scene_dir, image_name) in enumerate(scenes):
+        try:
+            print(ind,'-',image_name)
+
+            if os.path.exists(os.path.join(out_dir,image_name + '_Murphy.TIF')) or os.path.exists(os.path.join(out_dir,image_name + '_Kumar-Roy.TIF')) or os.path.exists(os.path.join(out_dir,image_name + '_Schroeder.TIF')):
+                print('    ja processado')
+                continue
+
+            if args.collection == 'c1':
+                reflectance, corrected, sat, profile = read_c1 (scene_dir, image_name)
+            else:
+                reflectance, corrected, sat, profile = read_c2 (scene_dir, image_name)
+
+            processImage (out_dir, image_name, profile, reflectance, corrected, sat)
+
+        except Exception as e:
+            print(e)

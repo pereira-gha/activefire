@@ -3,6 +3,11 @@
 Created on Sun Sep  6 11:20:15 2020
 
 @author: aloga
+
+Collection 1 only: downloads the scenes used to create the published dataset.
+USGS removed the Collection 1 products in December 2022, so this script no longer
+works. For Collection 2, download the Level-1 scenes from USGS (EarthExplorer or
+the M2M API) and run: python create_masks.py --collection c2
 """
 
 #%%
