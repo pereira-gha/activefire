@@ -67,8 +67,8 @@ def jaccard3 (im1, im2):
     identical if `im1` and `im2` are switched.
     """
 
-    im1 = np.asarray(im1).astype(np.bool)
-    im2 = np.asarray(im2).astype(np.bool)
+    im1 = np.asarray(im1).astype(bool)
+    im2 = np.asarray(im2).astype(bool)
 
     if im1.shape != im2.shape:
         raise ValueError("Shape mismatch: im1 and im2 must have the same shape.")
@@ -82,8 +82,8 @@ def jaccard3 (im1, im2):
     im1 = np.logical_not(im1)
     im2 = np.logical_not(im2)
 
-    im1 = np.asarray(im1).astype(np.bool)
-    im2 = np.asarray(im2).astype(np.bool)
+    im1 = np.asarray(im1).astype(bool)
+    im2 = np.asarray(im2).astype(bool)
 
     if im1.shape != im2.shape:
         raise ValueError("Shape mismatch: im1 and im2 must have the same shape.")
@@ -109,7 +109,7 @@ def pixel_accuracy (y_true, y_pred):
     return pixel_accuracy    
 
 def connected_components (array):
-   structure = np.ones((3, 3), dtype=np.int)  # 8-neighboorhood
+   structure = np.ones((3, 3), dtype=int)  # 8-neighboorhood
    labeled, ncomponents = label(array, structure)
    return labeled
 

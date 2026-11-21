@@ -45,6 +45,8 @@ This script will unzip the downloaded files and separete the masks from the imag
 
 We provide only the processed patches, with their respective masks, but if you want to download the original images used to generate the patches, and process them by yourself, the code inside the folder `src/landsat` gives you an easy way to get the Landsat-8 satellite data available on AWS.
 
+**Landsat Collection 1 and Collection 2:** the dataset was created from Landsat-8 Collection 1 images, which USGS removed in December 2022. The code exactly as used in the paper is kept in the tag [`isprs2021`](https://github.com/pereira-gha/activefire/tree/isprs2021). The current `src/landsat/create_masks.py` accepts both collections (`--collection c1` or `--collection c2`) and also works with Landsat-9 images; see [src/landsat/README.md](src/landsat/README.md). Note that the Murphy et al. (2016) masks of the published dataset were generated before the fix of Eq. 3 in commit [`eaac23d`](https://github.com/pereira-gha/activefire/commit/eaac23d), so masks created with the current code will differ from them.
+
 ## Downloading the small subset of our dataset
 
 If you can't (or don't want to) download the full dataset, you can download a small subset of our dataset to try the code from this repository. Keep in mind that these samples represent only a small part of our dataset and were randomly selected, because of that you may find differents results from those described in our work.
@@ -258,6 +260,7 @@ scikit-learn
 pandas
 geopandas
 rasterio
+gdal (osgeo)
 ```
 If you want to use TensorFlow 2.X you can follow some hints in the [tensorflow-2.md](tensorflow-2.md) file.
 
